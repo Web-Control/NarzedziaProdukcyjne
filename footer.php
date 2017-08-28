@@ -1,0 +1,1 @@
+<p>Suszarnia Warzyw Jaworski<br / >wspierane przez web-control.pl</p>

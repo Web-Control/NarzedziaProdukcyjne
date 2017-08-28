@@ -1,0 +1,93 @@
+
+@font-face
+
+{
+
+font-family: Brie Light;
+
+src:url(czcionki/BRI293.TTF);
+
+}
+
+@font-face
+
+{
+
+font-family: Neuropolitical;
+
+src:url(czcionki/neuropolitical_rg.otf);
+
+}
+
+@font-face
+
+{
+
+font-family: Terminator;
+
+src:url(czcionki/Terminator.otf);
+
+}
+
+@font-face
+
+{
+
+font-family: NFS;
+
+src:url(czcionki/NFS.ttf);
+
+}
+
+legend {
+  font-size:21px;
+ font-weight:bold;
+ font-family: Brie Light;
+}
+
+label {
+  font-size: 14px;
+  font-family: Arial;
+}
+
+.form-control {
+	width: 80%;
+  height: 30px;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 2px;
+  font-family: Arial;
+}
+
+input[type=submit]
+{
+	font-family:Arial;
+}
+
+.podpowiedz + .tooltip > .tooltip-inner {
+    background-color: #73AD21;
+    color: #FFFFFF;
+    border: 1px solid green;
+    padding: 15px;
+    font-size: 20px;
+}
+
+.alert {
+	margin-top:10px;
+	margin-bottom:-10px;
+	font-family: Arial;
+}
+
+h1,h2,h3,h4,h5,h6
+{
+	font-family: Arial;
+}
+
+a {
+	font-family: Brie Light;
+}
+
+footer{
+	font-family: Brie Light;
+}
+
