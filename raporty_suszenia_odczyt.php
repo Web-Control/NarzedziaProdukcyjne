@@ -139,6 +139,8 @@
 			$opcja2="";
 			
 			$wszystkie_dane=array($asortyment_suszu,$nr_suszarni);
+			
+			//echo "Działa DS".$_SESSION['data_do_nav']."DR ".$data_raportu."";
 
 			function sprawdz_istnienie_danych($tablica) {
 					foreach ($tablica as $element) {
@@ -179,7 +181,12 @@
 					$data_raportu = $mysqli -> real_escape_string($data_raportu);
 					
 					//Ustawiamy date raportu do nawigacji poprzedni/nastepny dzień
+					if (isset($_POST['submit2']) || isset($_POST['ostatni_raport'])) {
+						//echo "Działa DS".$_SESSION['data_do_nav']." DR ".$data_raportu."";
+							$_SESSION['data_do_nav']="";
+						}	
 					if ($_POST['poprzedni']) {
+						
 						if (!isset($_SESSION['data_do_nav'])) 
 						{
 						$data_raportu=date('Y-m-d', strtotime($data_raportu . ' -1 day'));
@@ -192,6 +199,7 @@
 					}
 					
 					if ($_POST['nastepny']) {
+						
 						if (!isset($_SESSION['data_do_nav'])) 
 						{
 						$data_raportu=date('Y-m-d', strtotime($data_raportu . ' +1 day'));
