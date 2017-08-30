@@ -137,10 +137,34 @@
 			$ostatni_raport=filtruj($_POST['ostatni_raport']);
 			$opcja_ostatni_raport="";
 			$opcja2="";
+			//Ustawiamy date do nawigacji poprzeni/nastepny dzien
+			if ($_POST['poprzedni']) {
+						
+						if (!isset($_SESSION['data_do_nav'])) 
+						{
+						$data_raportu=date('Y-m-d', strtotime($data_raportu . ' -1 day'));
+						$_SESSION['data_do_nav']=$data_raportu;
+						}else
+							{
+							$_SESSION['data_do_nav']=date('Y-m-d', strtotime($_SESSION['data_do_nav'] . ' -1 day'));
+							$data_raportu=$_SESSION['data_do_nav'];
+							}
+					}
+					
+					if ($_POST['nastepny']) {
+						
+						if (!isset($_SESSION['data_do_nav'])) 
+						{
+						$data_raportu=date('Y-m-d', strtotime($data_raportu . ' +1 day'));
+						$_SESSION['data_do_nav']=$data_raportu;
+						}else
+							{
+							$_SESSION['data_do_nav']=date('Y-m-d', strtotime($_SESSION['data_do_nav'] . ' +1 day'));
+							$data_raportu=$_SESSION['data_do_nav'];
+							}
+					}
 			
 			$wszystkie_dane=array($asortyment_suszu,$nr_suszarni);
-			
-			//echo "Działa DS".$_SESSION['data_do_nav']."DR ".$data_raportu."";
 
 			function sprawdz_istnienie_danych($tablica) {
 					foreach ($tablica as $element) {
@@ -179,37 +203,6 @@
 					//usuwamy specjalne znaki takie jak '," aby nie możnabyło wpisać ich z formularza do zapytania SQL
 					$asortyment_suszu = $mysqli -> real_escape_string($asortyment_suszu);
 					$data_raportu = $mysqli -> real_escape_string($data_raportu);
-					
-					//Ustawiamy date raportu do nawigacji poprzedni/nastepny dzień
-					if (isset($_POST['submit2']) || isset($_POST['ostatni_raport'])) {
-						//echo "Działa DS".$_SESSION['data_do_nav']." DR ".$data_raportu."";
-							$_SESSION['data_do_nav']="";
-						}	
-					if ($_POST['poprzedni']) {
-						
-						if (!isset($_SESSION['data_do_nav'])) 
-						{
-						$data_raportu=date('Y-m-d', strtotime($data_raportu . ' -1 day'));
-						$_SESSION['data_do_nav']=$data_raportu;
-						}else
-							{
-							$_SESSION['data_do_nav']=date('Y-m-d', strtotime($_SESSION['data_do_nav'] . ' -1 day'));
-							$data_raportu=$_SESSION['data_do_nav'];
-							}
-					}
-					
-					if ($_POST['nastepny']) {
-						
-						if (!isset($_SESSION['data_do_nav'])) 
-						{
-						$data_raportu=date('Y-m-d', strtotime($data_raportu . ' +1 day'));
-						$_SESSION['data_do_nav']=$data_raportu;
-						}else
-							{
-							$_SESSION['data_do_nav']=date('Y-m-d', strtotime($_SESSION['data_do_nav'] . ' +1 day'));
-							$data_raportu=$_SESSION['data_do_nav'];
-							}
-					}
 					
 					$kolejny_dzien = date('Y-m-d', strtotime($data_raportu . ' +1 day'));
 					$nr_suszarni = $mysqli -> real_escape_string($nr_suszarni);
@@ -291,9 +284,11 @@
 						//Aby ponownie przeszukać wyniki musimy doadać funckje data_seek() która ustawia wskaźnik na wskazaną pozycje
 						$stmt->data_seek(0);
 						if ($stmt -> fetch()) {
-							printf("<b>Dat:</b>&nbsp %s &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp", $Data);
+							printf("<b>Data:</b>&nbsp %s &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp", $Data);
 							/*Ustawiamy zmienne sesji do poźniejszego tworzenia raportu pdf*/
 							$_SESSION["data_raportu"] = $Data;
+							//Ustawiamy date do nawigacji poprzedni/nastepny dzien-raport
+							$_SESSION['data_do_nav']=$Data;
 						}
 						printf("<b>Nr Suszarni:</b>&nbsp %s <br / ><br / >", $nr_suszarni);
 
