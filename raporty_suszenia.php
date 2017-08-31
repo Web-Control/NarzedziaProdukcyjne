@@ -352,7 +352,12 @@ if ($_SESSION['sukces']) {
               <?php
               if ( $_SESSION['login'] == 'Szymon Ch.')
                 {
-                  echo "<option Value='Szymon Ch.'>Szymon Ch.</option>
+                	if (isset($_POST['osoba_odpowiedzialna'])) {
+						echo "<option value='" . $_POST['osoba_odpowiedzialna'] . "' >" . $_POST['osoba_odpowiedzialna'] . "</option>";
+					}
+					
+                  echo "
+                  		<option Value='Szymon Ch.'>Szymon Ch.</option>
                         <option Value='Patryk Z.'>Patryk Z.</option>
                         <option Value='Magda K.'>Magda K.</option>
                         <option Value='Krzysztof D.'>Krzysztof D.</option>
