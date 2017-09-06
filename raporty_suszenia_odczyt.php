@@ -49,7 +49,7 @@
 					$i++;
     				}
     				}
-					
+
 					if (isset($_POST['asortyment_suszu']))
 					{
 						echo '<option value="'.$_POST['asortyment_suszu'].'">'.$_POST['asortyment_suszu'].'</option>';
@@ -57,10 +57,10 @@
 					}
 
 						foreach ($Asortyment_wbazie as $key => $value) {
-	
+
 							printf("<option value='%s'>%s</option>",$value,$value);
 						}
-				
+
 
 				}
 ?>
@@ -92,6 +92,12 @@
 
 				</div>
 				<div class="row">
+
+					<div class="col-sm-4">
+					<label >Numer Dostawcy</label>
+					<input class="form-control" type="number" name="numer_dostawcy" max="10000"<?php if (isset($_POST['numer_dostawcy'])) {echo "value='".$_POST['numer_dostawcy']."'";} ?>/>
+					</div>
+
 					<div class="col-sm-4">
 					<label >Rok</label>
 					<input class="form-control"  type="number" min="1900" max="2099" step="1" value="<?php echo date("Y"); ?>" name="rok" />
@@ -101,10 +107,12 @@
 					<hr></hr>
 
 					<span class="glyphicon glyphicon-export"></span>&nbsp<input type="submit" value="Odczytaj raport" name="submit2"><br / ><br / >
+					<span class="glyphicon glyphicon-export"></span>&nbsp<input type="submit" value="Znajdź dostawcę" name="znajdz_dostawce"><br / ><br / >
 					<span class="glyphicon glyphicon-export"></span>&nbsp<input type="submit" value="Podsumowanie asortymentu" name="produkcja_asortymentu"><br / ><br / >
 					<span class="glyphicon glyphicon-export"></span>&nbsp<input type="submit" value="Podsumowanie całej produkcji" name="cala_produkcja"><br / ><br / >
-					
-					<?php 
+
+
+					<?php
 					if ($_POST['submit2'] || $_POST['poprzedni'] || $_POST['nastepny']) {
 						echo "<hr><br / ><div class='row'>
 							<div class='col-sm-4'><input type='submit' value=' < Poprzedni dzień' name='poprzedni'></div>
@@ -112,7 +120,7 @@
 						</div>";
 					}
 					?>
-					
+
 				</fieldset>
 			</form>
 		</div>
@@ -139,8 +147,8 @@
 			$opcja2="";
 			//Ustawiamy date do nawigacji poprzeni/nastepny dzien
 			if ($_POST['poprzedni']) {
-						
-						if (!isset($_SESSION['data_do_nav'])) 
+
+						if (!isset($_SESSION['data_do_nav']))
 						{
 						$data_raportu=date('Y-m-d', strtotime($data_raportu . ' -1 day'));
 						$_SESSION['data_do_nav']=$data_raportu;
@@ -150,10 +158,10 @@
 							$data_raportu=$_SESSION['data_do_nav'];
 							}
 					}
-					
+
 					if ($_POST['nastepny']) {
-						
-						if (!isset($_SESSION['data_do_nav'])) 
+
+						if (!isset($_SESSION['data_do_nav']))
 						{
 						$data_raportu=date('Y-m-d', strtotime($data_raportu . ' +1 day'));
 						$_SESSION['data_do_nav']=$data_raportu;
@@ -163,7 +171,7 @@
 							$data_raportu=$_SESSION['data_do_nav'];
 							}
 					}
-			
+
 			$wszystkie_dane=array($asortyment_suszu,$nr_suszarni);
 
 			function sprawdz_istnienie_danych($tablica) {
@@ -203,12 +211,12 @@
 					//usuwamy specjalne znaki takie jak '," aby nie możnabyło wpisać ich z formularza do zapytania SQL
 					$asortyment_suszu = $mysqli -> real_escape_string($asortyment_suszu);
 					$data_raportu = $mysqli -> real_escape_string($data_raportu);
-					
+
 					$kolejny_dzien = date('Y-m-d', strtotime($data_raportu . ' +1 day'));
 					$nr_suszarni = $mysqli -> real_escape_string($nr_suszarni);
 					$ostatni_raport = $mysqli -> real_escape_string($ostatni_raport);
-					
-					
+
+
 
 					if ($opcja_ostatni_raport){
 						if ($stmt = $mysqli -> prepare("SELECT Czas FROM `" . $asortyment_suszu . "`  WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "`) AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') AND NrSuszarni=?"))
@@ -277,7 +285,7 @@
    						echo '<div class="alert alert-success alert-dismissable fade in">
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Odczytano dane. Poniżej znajduje się twój raport. </div><br / >';
-							
+
 
 						/*Wyswietlamy dane nagłówkowe*/
 						printf("<b>Asortyment:</b>&nbsp %s &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp ", $asortyment_suszu);
@@ -802,14 +810,14 @@ $rok=filtruj($_POST['rok']);
 
 			$zapytanie1="";
 			$zapytanie2="";
-			
+
 			$Suma_Wilgotnosc="";
 			$Ilosc_pomiarow="";
 			$Srednia_Wilgotnosc="";
 			$precision="";
-			
+
 			if ($stmt = $mysqli -> prepare("SELECT SUM(Wilgotnosc) FROM `" . $asortyment_suszu. "` WHERE NrSuszarni=? AND Data LIKE '%" . $rok . "%' AND Wilgotnosc > 0"))
-						{ 
+						{
 
 					$stmt -> bind_param("s",$nr_suszarni);
 					$stmt -> execute();
@@ -821,7 +829,7 @@ $rok=filtruj($_POST['rok']);
 							}
 
 						if ($stmt = $mysqli -> prepare("SELECT COUNT(Wilgotnosc) FROM `" . $asortyment_suszu . "` WHERE NrSuszarni=? AND Data LIKE '%" . $rok . "%' AND Wilgotnosc > 0 "))
-						{ 
+						{
 					$stmt -> bind_param("s", $nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ilosc_pom);
@@ -832,10 +840,10 @@ $rok=filtruj($_POST['rok']);
 
 							}
 						}
-						
+
 						$Srednia_Wilgotnosc=($Suma_Wilgotnosc/$Ilosc_pomiarow);
 						$Srednia_Wilgotnosc=round($Srednia_Wilgotnosc,$precision=2);
-						
+
 
 						}
 
@@ -866,7 +874,7 @@ $rok=filtruj($_POST['rok']);
 								$wydajnosc=round($wydajnosc,$precision=0);//wydajność na dobę
 								$wydajnosc2=$wydajnosc/24;
 								$wydajnosc2=round($wydajnosc2,$precision=0);//wydajność na h
-								
+
 
 								//Zmienne do raportu pdf
 								$_SESSION['rok'] = $rok;
@@ -944,9 +952,9 @@ $rok=filtruj($_POST['rok']);
 }
 
 //Tworzymy raport podsumowania całej produkcji
-if ($_POST['cala_produkcja']) 
+if ($_POST['cala_produkcja'])
 {
-	
+
 	$rok=filtruj($_POST['rok']);
 	$_SESSION['rok']=$rok;
 	$Calkowita_ilosc_suszu="";
@@ -964,91 +972,91 @@ if ($_POST['cala_produkcja'])
 				 $Asortyment_wbazie=array();
 				 $Zestawienie_suszu=array();
 				 $Zestawienie_wilgotnosci=array();
-				 	
-				//Robimy liste asortymentu. Zapytanie do bazy o obecny asortyment 
+
+				//Robimy liste asortymentu. Zapytanie do bazy o obecny asortyment
 					if ($stmt = $mysqli -> prepare("SELECT Asortyment FROM AsortymentSuszu WHERE Asortyment NOT LIKE '%Arbuz%' "))
 					{
 							//echo "Zapytanie1 działa<br / >";
 						$stmt -> execute();
 						$stmt -> bind_result($Obecny_asortyment);
 						$stmt -> store_result();
-						
+
 						if ($stmt->num_rows > 0) {
-	
+
 							/* Wyciągamy dane z zapytania sql i zapisujemy do tablicy  */
 		    				while ($stmt->fetch()) {
 							static $i=0;
 							$Asortyment_wbazie[$i]=$Obecny_asortyment;
 							$i++;
 		    				}
-	    				}		
+	    				}
 					}
-				
+
 				//Pobieramy ilosc suszu dla każdego asortymentu
-				//Dla jednej suszarni bo całkowitą ilość suszu wpisujemy do każdej suszarni na której idzie dany asortyment 
-				foreach ($Asortyment_wbazie as $key => $asortyment) 
+				//Dla jednej suszarni bo całkowitą ilość suszu wpisujemy do każdej suszarni na której idzie dany asortyment
+				foreach ($Asortyment_wbazie as $key => $asortyment)
 				{
-					
+
 				if ($stmt = $mysqli -> prepare("SELECT SUM(CalkowitaIloscSuszu) FROM `" .$asortyment. "` WHERE NrSuszarni=(SELECT MIN(NrSuszarni) FROM  `" .$asortyment. "`) AND Data LIKE '%" . $rok . "%' "))
-						{ 
+						{
 					$stmt -> execute();
 					$stmt -> bind_result($Suma_suszu);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
 						if ($stmt -> fetch())
 							{
-							$Zestawienie_suszu[$asortyment]=$Suma_suszu;								
+							$Zestawienie_suszu[$asortyment]=$Suma_suszu;
 							}
 						}
 				}
-				
+
 				//Obliczamy całkowitą ilość suszu
 				foreach ($Zestawienie_suszu as $asortyment => $ilosc_suszu) {
 						$Calkowita_ilosc_suszu=$Calkowita_ilosc_suszu+$ilosc_suszu;
 				}
-				
+
 				//Pobieramy średnią wartość wilgotność dla każdego asortymentu
-					foreach ($Asortyment_wbazie as $key => $asortyment) 
+					foreach ($Asortyment_wbazie as $key => $asortyment)
 				{
-					
+
 				if ($stmt = $mysqli -> prepare("SELECT AVG(Wilgotnosc) FROM `" .$asortyment. "` WHERE Wilgotnosc > 0 AND Data LIKE '%" . $rok . "%' "))
-						{ 
+						{
 					$stmt -> execute();
 					$stmt -> bind_result($Sr_wilg);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
 						if ($stmt -> fetch())
 							{
-							$Sr_wilg=round($Sr_wilg,2);	
-							$Zestawienie_wilgotnosci[$asortyment]=$Sr_wilg;								
+							$Sr_wilg=round($Sr_wilg,2);
+							$Zestawienie_wilgotnosci[$asortyment]=$Sr_wilg;
 							}
 						}
 				}
-				
-										
+
+
 				 if ($Calkowita_ilosc_suszu == 0) {
-					 
+
 					 echo '<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span>&nbsp<strong>Info!</strong>&nbsp Brak danych w bazie danych</div>';
 				 } else{
 				 			echo '<div class="alert alert-success alert-dismissable fade in">
 								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 								<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Odczytano dane. Poniżej znajduje się twój raport. </div><br / >';
-							
+
 							//Raport ilości suszu z całego roku dla wszystkich asortymentów
 							echo"
 							<div class='row'><div class='col-sm-8'><h3><b>Podsumowanie produkcji rok: $rok</b><br /></h3></div></div>
 							<div class='row'><div class='col-sm-4'><h4><b>Asortyment:<b></h4></div> <div class='col-sm-4'><h4><b>Ilość suszu:</b></h4></div> <div class='col-sm-4'><h4><b>Średnia wilgotność:</b></h4></div> </div><hr>
 							";
-							
-							foreach ($Zestawienie_suszu as $asortyment => $ilosc_suszu) 	
+
+							foreach ($Zestawienie_suszu as $asortyment => $ilosc_suszu)
 							{
-								
+
 								echo "<div class='row'> <div class='col-sm-4'>$asortyment</div> <div class='col-sm-4'> $ilosc_suszu kg</div> <div class='col-sm-4'> $Zestawienie_wilgotnosci[$asortyment] %</div></div><br / >";
-								
+
 							}
-							
+
 							echo "<hr><div class='row'><div class='col-sm-8'><h4><b>Całkowita ilość suszu: $Calkowita_ilosc_suszu kg</b><br /></h4></div></div>";
-							
+
 							echo "<hr><form method='post' action='raportpdf_roczne_podsumowanie_suszenia_pokaz.php' target='_blank'><input type='submit' value='Pobierz raport PDF' name='pdf'></form><br / >";
 							echo "<form method='post' action='raportpdf_roczne_podsumowanie_suszenia_pokaz.php' target='_blank'>
 													<label>Email</label>
@@ -1059,9 +1067,105 @@ if ($_POST['cala_produkcja'])
 													<input type='submit' value='Wyślij raport PDF' name='wyslij'>
 												</fieldset></form>";
 						}
-				
+
 		}
-	
+
+}
+
+//Szukamy dostawcy w raportach z danego asortymentu
+if ($_POST['znajdz_dostawce'])
+{
+	if (!$_POST['numer_dostawcy']) {
+		echo "<div class='alert alert-warning'><span class='glyphicon glyphicon-alert'></span>&nbsp<strong>Uwaga!</strong>&nbsp Podaj: Numer Dostawcy.</div>";
+	}else
+	{
+	$asortyment_suszu = filtruj($_POST['asortyment_suszu']);
+	$numer_dostawcy=filtruj($_POST['numer_dostawcy']);
+	$rok=filtruj($_POST['rok']);
+
+	/* Łączymy się z serwerem */
+	require_once ('polaczenie_z_baza.php');
+
+		if (mysqli_connect_errno()) {
+
+			printf("<div class='alert alert-danger'><span class='glyphicon glyphicon-thumbs-down'></span>&nbsp<strong>Uwaga!</strong>&nbspBrak połączenia z serwerem MySQL. Kod błędu: %s\n</div>", mysqli_connect_error());
+
+		}
+		else
+		{
+				$Daty_raportow=array();
+				$Dostawcy=array();
+				$Zestawienie=array();
+
+				//Wyszukujemy w bazie daty raportów gdzie występuje podany numer dostawcy
+					if ($stmt = $mysqli -> prepare("SELECT Data,Dostawca FROM `" . $asortyment_suszu. "` WHERE Dostawca LIKE '%" . $numer_dostawcy . "%' "))
+					{
+							//echo "Zapytanie1 działa<br / >";
+						$stmt -> execute();
+						$stmt -> bind_result($Data,$Dostawca);
+						$stmt -> store_result();
+
+						if ($stmt->num_rows > 0) {
+
+							/* Wyciągamy dane z zapytania sql i zapisujemy do tablicy  */
+		    				while ($stmt->fetch()) {
+							static $n=0;
+							$Daty_raportow[$n]=$Data;
+							$Dostawcy[$n]=$Dostawca;
+							$n++;
+		    				}
+	    				}
+					}
+
+					//print_r($Daty_raportow);
+					//print_r($Dostawcy);
+
+					//Tworzymy zestawienie dat i dostawców
+					for ($i=0; $i <count($Daty_raportow) ; $i++) {
+						$Zestawienie[$Daty_raportow[$i]]=$Dostawcy[$i];
+					}
+
+					//print_r($Zestawienie);
+					//$ilosc=count($Zestawienie);
+					//echo "$ilosc";
+
+
+						if (count($Zestawienie)==0) {
+							echo '<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span>&nbsp<strong>Info!</strong>&nbsp Brak danych w bazie danych</div>';
+						}else
+							{
+				 			echo '<div class="alert alert-success alert-dismissable fade in">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Odczytano dane. Poniżej znajduje się twój raport. </div><br / >';
+
+							//Raport ilości suszu z całego roku dla wszystkich asortymentów
+							echo"
+							<div class='row'><div class='col-sm-12'><h3><b>Daty raportów: $asortyment_suszu w roku: $rok gdzie dostawcą był: $numer_dostawcy.  </b><br /></h3></div></div>
+							<div class='row'><div class='col-sm-4'><h4><b>Data:<b></h4></div> <div class='col-sm-4'><h4><b>Dostawca:</b></h4></div>  </div><hr>
+							";
+
+							foreach ($Zestawienie as $data => $dostawca) {
+								echo "<div class='row'> <div class='col-sm-4'>$data</div> <div class='col-sm-8'>$dostawca</div>  </div> <br / >";
+							}
+
+
+							/*
+							echo "<hr><form method='post' action='raportpdf_roczne_podsumowanie_suszenia_pokaz.php' target='_blank'><input type='submit' value='Pobierz raport PDF' name='pdf'></form><br / >";
+							echo "<form method='post' action='raportpdf_roczne_podsumowanie_suszenia_pokaz.php' target='_blank'>
+													<label>Email</label>
+												<div class='row'><div class='col-sm-4'>
+												<input class='form-control' type='email' name='email' maxlength='50' required/>
+												</div></div>
+												<br / >
+													<input type='submit' value='Wyślij raport PDF' name='wyslij'>
+												</fieldset></form>";
+							 *
+							 */
+							 }
+
+
+		}
+	}
 }
 
 ?>
