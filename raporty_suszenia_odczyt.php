@@ -1147,11 +1147,17 @@ if ($_POST['znajdz_dostawce'])
 							foreach ($Zestawienie as $data => $dostawca) {
 								echo "<div class='row'> <div class='col-sm-4'>$data</div> <div class='col-sm-8'>$dostawca</div>  </div> <br / >";
 							}
+							
+							//Przygotowujemy dane do raportu pdf
+							$_SESSION['rok']=$rok;
+							$_SESSION['asortyment']=$asortyment_suszu;
+							$_SESSION['nr_dostawcy']=$numer_dostawcy;
+							$_SESSION['zestawienie']=$Zestawienie;
 
 
-							/*
-							echo "<hr><form method='post' action='raportpdf_roczne_podsumowanie_suszenia_pokaz.php' target='_blank'><input type='submit' value='Pobierz raport PDF' name='pdf'></form><br / >";
-							echo "<form method='post' action='raportpdf_roczne_podsumowanie_suszenia_pokaz.php' target='_blank'>
+							
+							echo "<hr><form method='post' action='raportpdf_odbiorca_pokaz.php' target='_blank'><input type='submit' value='Pobierz raport PDF' name='pdf'></form><br / >";
+							echo "<form method='post' action='raportpdf_odbiorca_pokaz.php' target='_blank'>
 													<label>Email</label>
 												<div class='row'><div class='col-sm-4'>
 												<input class='form-control' type='email' name='email' maxlength='50' required/>
@@ -1159,8 +1165,7 @@ if ($_POST['znajdz_dostawce'])
 												<br / >
 													<input type='submit' value='Wyślij raport PDF' name='wyslij'>
 												</fieldset></form>";
-							 *
-							 */
+							 
 							 }
 
 
