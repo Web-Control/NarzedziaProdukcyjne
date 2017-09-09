@@ -4,10 +4,10 @@ if ($_SESSION['sukces']) {
 	echo '<div class="alert alert-success alert-dismissable fade in">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Zapisano dane. Poniżej znajduje się twój raport. </div><br / >';
-	
-	//Resetujemy komunikaty	
+
+	//Resetujemy komunikaty
 	$_SESSION['sukces']=FALSE;
-} 
+}
  * */
 ?>
 
@@ -88,7 +88,7 @@ if ($_SESSION['sukces']) {
 					<div class="row">
 					<div class="col-sm-4">
 					<label >Żądana wilgotność</label>
-					<input class="form-control"  type="number" min="1" max="10" step="0.5" maxlength="5"  name="wilgotnosc" required/>
+					<input class="form-control"  type="number" min="1" max="10" step="0.5" maxlength="5"  name="wilgotnosc" />
 					</div>
 
 				</div>
@@ -97,6 +97,7 @@ if ($_SESSION['sukces']) {
 					<hr></hr>
 
 					<span class="glyphicon glyphicon-export"></span>&nbsp<input type="submit" value="Pobierz parametry" name="parametry"><br / ><br / >
+					<span class="glyphicon glyphicon-export"></span>&nbsp<input type="submit" value="Załaduj ostatnie parametry" name="ostatnie_parametry"><br / ><br / >
 
 				</fieldset>
 			</form>
@@ -154,6 +155,12 @@ if ($_SESSION['sukces']) {
 										$stmt -> store_result();
 
 										if ($stmt->num_rows > 0) {
+
+											echo '<div class="alert alert-success alert-dismissable fade in">
+											<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+											<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Odczytano dane. Poniżej znajduje się lista odpowiadających parametrów. </div><br / >';
+
+
 											//Nagłówek
 											echo "<h4><b>Parametry procesu suszenia:</b></h4><br / >";
 											echo "<div class='row'><div class='col-sm-4'><h4><b>Suszarnia nr: " .$nr_suszarni." </b></h4></div> <div class='col-sm-4'><h4><b> Asortyment: ".$asortyment." </b></h4></div> <div class='col-sm-4'><h4><b> Cel wilgotności: " .$wilgotnosc." %</b></h4></div></div>";
@@ -177,6 +184,99 @@ if ($_SESSION['sukces']) {
 				}
 
 			}
+
+
+//Ustalamy ostatnie parametry dla wybranego asortymentu do wpisu do formularza
+if (isset($_POST['ostatnie_parametry']))
+{
+	/*ob_end_clean();
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);*/
+
+	//funkcja filtrująca dane
+	function filtruj($zmienna) {
+	$data = trim($zmienna);
+	//usuwa spacje, tagi
+	$data = stripslashes($zmienna);
+	//usuwa slashe
+	$data = htmlspecialchars($zmienna);
+	//zamienia tagi html na czytelne znaki aby w formularzu nie wpisać szkodliwego kodu
+	return $zmienna;
+	}
+
+	/*Odbieramy dane z formularza*/
+	$asortyment = filtruj($_POST['asortyment']);
+	$nr_suszarni = filtruj($_POST['nr_suszarni']);
+
+	//* Łączymy się z serwerem */
+	require_once ('polaczenie_z_baza.php');
+
+	if (mysqli_connect_errno())
+		{
+
+		printf("<div class='alert alert-danger'><strong>Uwaga!</strong>&nbsp Brak połączenia z serwerem MySQL. Kod błędu: %s\n</div>", mysqli_connect_error());
+		} else
+			{
+			//usuwamy specjalne znaki takie jak '," aby nie możnabyło wpisać ich z formularza do zapytania SQL
+			$asortyment = $mysqli -> real_escape_string($asortyment);
+			$nr_suszarni = $mysqli -> real_escape_string($nr_suszarni);
+
+				if ($stmt = $mysqli -> prepare("SELECT PredkoscBlanszownika,TemperaturaBlanszownika,PredkoscSiatkiNr7,PredkoscSiatkiNr6,PredkoscSiatkiNr5,PredkoscSiatkiNr4,PredkoscSiatkiNr3,PredkoscSiatkiNr2,PredkoscSiatkiNr1,TemperaturaGora,TemperaturaDol FROM `" . $asortyment . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment . "`) AND NrSuszarni=? "))
+					{//echo "Zapytanie działa <br / >";
+					/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
+					$stmt -> bind_param("s", $nr_suszarni);
+					$stmt -> execute();
+					$stmt -> bind_result($Predkosc_Blanszownika,$Temperatura_Blanszownika,$V_Siatka7,$V_Siatka6,$V_Siatka5,$V_Siatka4,$V_Siatka3,$V_Siatka2,$V_Siatka1,$Temp_Gorna,$Temp_Dolna);
+					$stmt -> store_result();
+
+						if ($stmt->num_rows > 0)
+						{
+							if ($stmt->fetch())
+							{
+							$_SESSION['V_blanszownika']= $Predkosc_Blanszownika;
+							$_SESSION['Temp_blanszownika']=$Temperatura_Blanszownika;
+							$_SESSION['V_siatka7']=$V_Siatka7;
+							$_SESSION['V_siatka6']=$V_Siatka6;
+							$_SESSION['V_siatka5']=$V_Siatka5;
+							$_SESSION['V_siatka4']=$V_Siatka4;
+							$_SESSION['V_siatka3']=$V_Siatka3;
+							$_SESSION['V_siatka2']=$V_Siatka2;
+							$_SESSION['V_siatka1']=$V_Siatka1;
+							$_SESSION['Temp_gorna']=$Temp_Gorna;
+							$_SESSION['Temp_dolna']=$Temp_Dolna;
+
+							echo '<div class="alert alert-success alert-dismissable fade in">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Ostatnie parametry zostały załadowane do formularza. </div><br / >';
+
+
+							/*echo "".$_SESSION['V_blanszownika']." <br / >";
+							echo "".$_SESSION['Temp_blanszownika']." <br / >";
+							echo "".$_SESSION['V_siatka7']." <br / >";
+							echo "".$_SESSION['V_siatka6']." <br / >";
+							echo "".$_SESSION['V_siatka5']." <br / >";
+							echo "".$_SESSION['V_siatka4']." <br / >";
+							echo "".$_SESSION['V_siatka3']." <br / >";
+							echo "".$_SESSION['V_siatka2']." <br / >";
+							echo "".$_SESSION['V_siatka1']." <br / >";
+							echo "".$_SESSION['Temp_gorna']." <br / >";
+							echo "".$_SESSION['Temp_dolna']." <br / >";*/
+
+							}
+
+						}
+						else
+							{
+							echo '<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span>&nbsp<strong>Info!</strong>&nbsp Brak danych w bazie danych</div>';
+							}
+
+
+					}
+
+			}
+
+}
 ?>
 <br / ><br / >
 <div id="formularz">
@@ -275,12 +375,28 @@ if ($_SESSION['sukces']) {
 					<div class="row">
 						<div class="col-sm-4">
 						<label >Prędkość Blanszownika</label>
-						<input class="form-control" type="number" name="predkosc_blanszownika"  min="0" max="140" <?php echo "value='".$_POST['predkosc_blanszownika']."'" ?>/>
+						<input class="form-control" type="number" name="predkosc_blanszownika"  min="0" max="140"
+						<?php
+						 if (isset($_POST['predkosc_blanszownika'])) { echo "value='".$_POST['predkosc_blanszownika']."'";}
+								else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['V_blanszownika']."'";}
+									}
+							?>
+						/>
 						</div>
 
 						<div class="col-sm-4">
 						<label >Temperatura Blanszownika</label>
-						<input class="form-control" type="number" name="temperatura_blanszownika"  min="0" max="110" <?php echo "value='".$_POST['temperatura_blanszownika']."'" ?>/>
+						<input class="form-control" type="number" name="temperatura_blanszownika"  min="0" max="110"
+							 <?php
+							  	if (isset($_POST['temperatura_blanszownika'])) {echo "value='".$_POST['temperatura_blanszownika']."'";}
+									else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['Temp_blanszownika']."'";}
+									}
+							  ?>
+						  />
 						</div>
 					</div>
 						<hr>
@@ -288,41 +404,98 @@ if ($_SESSION['sukces']) {
 					<div class="row">
 						<div class="col-sm-4">
 						<label >Prędkość Siatki nr 7</label>
-						<input class="form-control" type="number" name="siatka7"  min="1" max="140" required <?php echo "value='".$_POST['siatka7']."'" ?>/>
+						<input class="form-control" type="number" name="siatka7"  min="1" max="140" required
+							<?php
+								if (isset($_POST['siatka7'])) { echo "value='".$_POST['siatka7']."'";}
+									else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['V_siatka7']."'";}
+									}
+							?>
+						/>
 						</div>
 
 						<div class="col-sm-4">
 						<label >Prędkość Siatki nr 6</label>
-						<input class="form-control" type="number" name="siatka6"  min="1" max="140" required <?php echo "value='".$_POST['siatka6']."'" ?>/>
+						<input class="form-control" type="number" name="siatka6"  min="1" max="140" required
+							<?php
+								if (isset($_POST['siatka6'])) { echo "value='".$_POST['siatka6']."'";}
+									else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['V_siatka6']."'";}
+									}
+							?>
+
+						/>
 						</div>
 
 						<div class="col-sm-4">
 						<label >Prędkość Siatki nr 5</label>
-						<input class="form-control" type="number" name="siatka5"  min="1" max="140" required <?php echo "value='".$_POST['siatka5']."'" ?>/>
+						<input class="form-control" type="number" name="siatka5"  min="1" max="140" required
+							<?php
+								if (isset($_POST['siatka5'])) { echo "value='".$_POST['siatka5']."'";}
+									else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['V_siatka5']."'";}
+									}
+							?>
+						/>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-sm-4">
 						<label >Prędkość Siatki nr 4</label>
-						<input class="form-control" type="number" name="siatka4"  min="1" max="140" required <?php echo "value='".$_POST['siatka4']."'" ?>/>
+						<input class="form-control" type="number" name="siatka4"  min="1" max="140" required
+							<?php
+								if (isset($_POST['siatka4'])) { echo "value='".$_POST['siatka4']."'";}
+									else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['V_siatka4']."'";}
+									}
+							?>
+						/>
 						</div>
 
 						<div class="col-sm-4">
 						<label >Prędkość Siatki nr 3</label>
-						<input class="form-control" type="number" name="siatka3"  min="1" max="140" required <?php echo "value='".$_POST['siatka3']."'" ?>/>
+						<input class="form-control" type="number" name="siatka3"  min="1" max="140" required
+							<?php
+								if (isset($_POST['siatka3'])) { echo "value='".$_POST['siatka3']."'";}
+									else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['V_siatka3']."'";}
+									}
+							?>
+						/>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-sm-4">
 						<label >Prędkość Siatki nr 2</label>
-						<input class="form-control" type="number" name="siatka2"  min="1" max="140" required <?php echo "value='".$_POST['siatka2']."'" ?>/>
+						<input class="form-control" type="number" name="siatka2"  min="1" max="140" required
+							<?php
+								if (isset($_POST['siatka2'])) { echo "value='".$_POST['siatka2']."'";}
+									else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['V_siatka2']."'";}
+									}
+							?>
+						/>
 						</div>
 
 						<div class="col-sm-4">
 						<label >Prędkość Siatki nr 1</label>
-						<input class="form-control" type="number" name="siatka1"  min="1" max="140" required <?php echo "value='".$_POST['siatka1']."'" ?>/>
+						<input class="form-control" type="number" name="siatka1"  min="1" max="140" required
+							<?php
+								if (isset($_POST['siatka1'])) { echo "value='".$_POST['siatka1']."'";}
+									else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['V_siatka1']."'";}
+									}
+							?>
+						/>
 						</div>
 					</div>
 						<hr></hr>
@@ -330,12 +503,28 @@ if ($_SESSION['sukces']) {
 					<div class="row">
 						<div class="col-sm-4">
 						<label >Górna Temperatura Suszarni</label>
-						<input class="form-control" type="number" name="temperatura_gorna"  min="1" max="110" required <?php echo "value='".$_POST['temperatura_gorna']."'" ?>/>
+						<input class="form-control" type="number" name="temperatura_gorna"  min="1" max="110" required
+							<?php
+								if (isset($_POST['temperatura_gorna'])) { echo "value='".$_POST['temperatura_gorna']."'";}
+									else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['Temp_gorna']."'";}
+									}
+							?>
+						/>
 						</div>
 
 						<div class="col-sm-4">
 						<label >Dolna Temperatura Suszarni</label>
-						<input class="form-control" type="number" name="temperatura_dolna"  min="1" max="110" required <?php echo "value='".$_POST['temperatura_dolna']."'" ?>/>
+						<input class="form-control" type="number" name="temperatura_dolna"  min="1" max="110" required
+							<?php
+								if (isset($_POST['temperatura_dolna'])) { echo "value='".$_POST['temperatura_dolna']."'";}
+									else
+									{
+										if(isset($_POST['ostatnie_parametry'])){ echo "value='".$_SESSION['Temp_dolna']."'";}
+									}
+							?>
+						/>
 						</div>
 					</div>
 						<hr></hr>
@@ -355,7 +544,7 @@ if ($_SESSION['sukces']) {
                 	if (isset($_POST['osoba_odpowiedzialna'])) {
 						echo "<option value='" . $_POST['osoba_odpowiedzialna'] . "' >" . $_POST['osoba_odpowiedzialna'] . "</option>";
 					}
-					
+
                   echo "
                   		<option Value='Szymon Ch.'>Szymon Ch.</option>
                         <option Value='Patryk Z.'>Patryk Z.</option>
@@ -584,10 +773,10 @@ if ($_SESSION['sukces']) {
 					//zamienia tagi html na czytelne znaki aby w formularzu nie wpisać szkodliwego kodu
 					return $zmienna;
 				}
-				
-				//Resetujemy komunikaty	
-				//$_SESSION['sukces']=FALSE;	
-				
+
+				//Resetujemy komunikaty
+				//$_SESSION['sukces']=FALSE;
+
 				/*Odbieramy dane z formularza*/
 				$asortyment = filtruj($_POST['asortyment']);
 				$nr_suszarni = filtruj($_POST['nr_suszarni']);
@@ -878,8 +1067,8 @@ if ($_SESSION['sukces']) {
    									echo '<div class="alert alert-success alert-dismissable fade in">
 										<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 										<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Zapisano dane. Poniżej znajduje się twój raport. </div><br / >';
-		
-   									
+
+
    								//$_SESSION['sukces']=TRUE;
 
 								printf("<b>Asortyment:</b>&nbsp %s &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <b>Data:</b>&nbsp %s &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <b>Nr Suszarni:</b>&nbsp %s <br / ><br / >", $asortyment, $data_do_odczytu, $nr_suszarni);
