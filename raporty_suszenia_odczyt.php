@@ -132,12 +132,10 @@
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);*/
-			function filtruj($zmienna) {
-							$data = trim($zmienna);//usuwa spacje, tagi
-							$data = stripslashes($zmienna);//usuwa slashe
-							$data = htmlspecialchars($zmienna);//zamienia tagi html na czytelne znaki aby w formularzu nie wpisać szkodliwego kodu
-							return $zmienna;
-						}
+
+	//* Łączymy się z serwerem */
+	require_once ('funkcje.php');
+
 			/*Odbieramy dane z formularza*/
 			$data_raportu = filtruj($_POST['data_raportu']);
 			$asortyment_suszu = filtruj($_POST['asortyment_suszu']);
@@ -1145,9 +1143,13 @@ if ($_POST['znajdz_dostawce'])
 							";
 
 							foreach ($Zestawienie as $data => $dostawca) {
+								//Nadajemy kolor numerowi dostawcy. Funkcja znajduje się w funkcje.php
+								$kolor=orange;
+								$dostawca=nadaj_kolor_w_tresci($dostawca, $numer_dostawcy, $kolor);
+
 								echo "<div class='row'> <div class='col-sm-4'>$data</div> <div class='col-sm-8'>$dostawca</div>  </div> <br / >";
 							}
-							
+
 							//Przygotowujemy dane do raportu pdf
 							$_SESSION['rok']=$rok;
 							$_SESSION['asortyment']=$asortyment_suszu;
@@ -1155,7 +1157,7 @@ if ($_POST['znajdz_dostawce'])
 							$_SESSION['zestawienie']=$Zestawienie;
 
 
-							
+
 							echo "<hr><form method='post' action='raportpdf_odbiorca_pokaz.php' target='_blank'><input type='submit' value='Pobierz raport PDF' name='pdf'></form><br / >";
 							echo "<form method='post' action='raportpdf_odbiorca_pokaz.php' target='_blank'>
 													<label>Email</label>
@@ -1165,7 +1167,7 @@ if ($_POST['znajdz_dostawce'])
 												<br / >
 													<input type='submit' value='Wyślij raport PDF' name='wyslij'>
 												</fieldset></form>";
-							 
+
 							 }
 
 
