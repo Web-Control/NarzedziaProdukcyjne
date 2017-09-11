@@ -15,7 +15,7 @@
 //Robimy liste asortymentu. Zapytanie do bazy o obecny asortyment
 	function asortyment($tablica)
 	{
-	if ($stmt = $mysqli -> prepare("SELECT Asortyment FROM AsortymentSuszu WHERE Asortyment NOT LIKE '%Arbuz%' "))
+	if ($stmt = $mysqli -> prepare("SELECT Asortyment FROM AsortymentSuszu "))
 		{
 			$stmt -> execute();
 			$stmt -> bind_result($Obecny_asortyment);
@@ -29,6 +29,31 @@
 						static $i=0;
 						$tablica[$i]=$Obecny_asortyment;
 						$i++;
+		    		}
+	    		}
+
+				return $tablica;
+		}
+
+	}
+
+//Robimy liste użytkowników.
+	function uzytkownicy($tablica)
+	{
+	if ($stmt = $mysqli -> prepare("SELECT Login FROM Uzytkownicy"))
+		{
+			$stmt -> execute();
+			$stmt -> bind_result($Uzytkownik);
+			$stmt -> store_result();
+
+			if ($stmt->num_rows > 0)
+				{
+					/* Wyciągamy dane z zapytania sql i zapisujemy do tablicy  */
+		    		while ($stmt->fetch())
+					 {
+						static $a=0;
+						$tablica[$a]=$Uzytkownik;
+						$a++;
 		    		}
 	    		}
 

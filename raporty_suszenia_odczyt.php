@@ -133,7 +133,7 @@
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);*/
 
-	//* Łączymy się z serwerem */
+	//* Ładujemy plik z porządzonymi funkcjami */
 	require_once ('funkcje.php');
 
 			/*Odbieramy dane z formularza*/

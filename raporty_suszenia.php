@@ -539,11 +539,48 @@ if (isset($_POST['ostatnie_parametry']))
 						<label >Osoba dokonująca Pomiaru</label>
 						<select class="form-control" name="osoba_odpowiedzialna" required>
               <?php
+              /* Łączymy się z serwerem */
+			require_once ('polaczenie_z_baza.php');
+
+			$Uzytkownicy=array();
+
+			if (mysqli_connect_errno()) {
+
+			printf("<div class='alert alert-danger'><span class='glyphicon glyphicon-thumbs-down'></span>&nbsp;<strong>Uwaga!</strong>&nbspBrak połączenia z serwerem MySQL. Kod błędu: %s\n</div>", mysqli_connect_error());
+
+			} else
+				{
+					if ($stmt = $mysqli -> prepare("SELECT Login FROM Uzytkownicy ORDER BY Login ASC"))
+					{
+						$stmt -> execute();
+						$stmt -> bind_result($Uzytkownik);
+						$stmt -> store_result();
+
+						if ($stmt->num_rows > 0)
+							{
+								/* Wyciągamy dane z zapytania sql i zapisujemy do tablicy  */
+					    		while ($stmt->fetch())
+								 {
+									static $a=0;
+									$Uzytkownicy[$a]=$Uzytkownik;
+									$a++;
+					    		}
+				    		}
+
+					}
+				}
+
+
               if ( $_SESSION['login'] == 'Szymon Ch.')
                 {
                 	if (isset($_POST['osoba_odpowiedzialna'])) {
 						echo "<option value='" . $_POST['osoba_odpowiedzialna'] . "' >" . $_POST['osoba_odpowiedzialna'] . "</option>";
 					}
+
+					/*foreach ($Uzytkownicy as $key => $value) {
+
+						printf("<option value='%s'>%s</option>",$value,$value);
+					}*/
 
                   echo "
                   		<option Value='Szymon Ch.'>Szymon Ch.</option>
