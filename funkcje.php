@@ -12,6 +12,18 @@
 		return $zmienna;
 	}
 
+// Konwersja UTF-8 -> ISO-8859-2
+function Utf8ToIso($str)
+{
+    return iconv("utf-8", "iso-8859-2", $str);
+}
+
+// Konwersja ISO-8859-2 -> UTF-8
+function IsoToUtf8($str)
+{
+    return iconv("iso-8859-2", "utf-8", $str);
+}
+
 //Robimy liste asortymentu. Zapytanie do bazy o obecny asortyment
 	function asortyment($tablica)
 	{

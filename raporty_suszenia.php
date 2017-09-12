@@ -578,6 +578,7 @@ if (isset($_POST['ostatnie_parametry']))
 					}
 
 					/*foreach ($Uzytkownicy as $key => $value) {
+					 $value=iconv("iso-8859-2", "utf-8", $value);
 
 						printf("<option value='%s'>%s</option>",$value,$value);
 					}*/
