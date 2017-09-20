@@ -118,7 +118,7 @@ if (isset($_POST['pdf']) || isset($_POST['wyslij'])) {
 											$pdf -> Cell(15, 5, "$data");
 									
 											$pdf -> SetXY(40, $y1);
-											$pdf -> Cell(15, 5, "$dostawca");
+											$pdf -> MultiCell(220, 5, "$dostawca");
 										}
 										
 									}

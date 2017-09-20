@@ -399,7 +399,7 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 
 		$pdf -> SetFont('arial_ce', '', 10);
 		$pdf -> SetXY(29, 160);
-		$pdf -> Cell(15, 5, "$Dostawca");
+		$pdf -> MultiCell(220, 5, "$Dostawca");
 
 		//Wyci�gamy info o uwagach
 		/* Utworzenie zapytania */

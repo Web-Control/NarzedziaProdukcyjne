@@ -119,7 +119,7 @@ if (isset($_POST['pdf']) || isset($_POST['wyslij'])) {
 	/* ????czymy si??? serwerem */
 	require_once ('polaczenie_z_baza.php');
 	
-	$y1 = ""; //pozycja kursora przy wypisywaniu wynik???a bazy danych
+	$y1 = ""; //pozycja y kursora przy wypisywaniu wynik???a bazy danych
 	
 	if ($stmt = $mysqli -> prepare("SELECT DISTINCT Data,Dostawca FROM `" . $asortyment_suszu . "` WHERE NrSuszarni=? AND Data LIKE '%" . $rok . "%' HAVING Dostawca > 0"))
 						{
@@ -177,11 +177,12 @@ if (isset($_POST['pdf']) || isset($_POST['wyslij'])) {
 										$pdf -> SetFont('arial_ce', '', 12);
 										$y = $pdf -> GetY();
 										$y1 = $y + 7;
+										
 										$pdf -> SetXY(10,$y1);
 										$pdf -> Cell(15, 5, "$data");
-								
+										
 										$pdf -> SetXY(40, $y1);
-										$pdf -> Cell(15, 5, "$dostawca");
+										$pdf -> MultiCell(220, 5, "$dostawca");
 										
 									}
 									
