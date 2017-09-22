@@ -1,7 +1,7 @@
 <title>Narzędzia produkcyjne - raport z procesu sterylizacji parowej-pobierz.</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="arkusz.css" type="text/css">
+  <link rel="stylesheet" href="css/arkusz.css" type="text/css">
   <link rel="stylesheet" href="lightbox/src/css/lightbox.css" type="text/css">
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="bootstrap/css/moj_arkusz.css">

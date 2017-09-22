@@ -1,5 +1,7 @@
 
-<?php/*
+<?php 
+ 
+ /*
 if ($_SESSION['sukces']) {
 	echo '<div class="alert alert-success alert-dismissable fade in">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -8,7 +10,8 @@ if ($_SESSION['sukces']) {
 	//Resetujemy komunikaty
 	$_SESSION['sukces']=FALSE;
 }
- * */
+ */
+
 ?>
 
 	<h1>Raport z procesu suszenia</h1>
@@ -539,36 +542,15 @@ if (isset($_POST['ostatnie_parametry']))
 						<label >Osoba dokonująca Pomiaru</label>
 						<select class="form-control" name="osoba_odpowiedzialna" required>
               <?php
-              /* Łączymy się z serwerem */
-			require_once ('polaczenie_z_baza.php');
-
-			$Uzytkownicy=array();
-
-			if (mysqli_connect_errno()) {
-
-			printf("<div class='alert alert-danger'><span class='glyphicon glyphicon-thumbs-down'></span>&nbsp;<strong>Uwaga!</strong>&nbspBrak połączenia z serwerem MySQL. Kod błędu: %s\n</div>", mysqli_connect_error());
-
-			} else
-				{
-					if ($stmt = $mysqli -> prepare("SELECT Login FROM Uzytkownicy ORDER BY Login ASC"))
-					{
-						$stmt -> execute();
-						$stmt -> bind_result($Uzytkownik);
-						$stmt -> store_result();
-
-						if ($stmt->num_rows > 0)
-							{
-								/* Wyciągamy dane z zapytania sql i zapisujemy do tablicy  */
-					    		while ($stmt->fetch())
-								 {
-									static $a=0;
-									$Uzytkownicy[$a]=$Uzytkownik;
-									$a++;
-					    		}
-				    		}
-
-					}
-				}
+              /*ob_end_clean();
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);*/
+            /* Łączymy się z serwerem */
+			require_once ('polaczenie_z_baza.php');  
+          	require_once ('funkcje.php');
+          	
+          $Uzytkownicy=ListaUzytkownikow($Uzytkownicy);
 
 
               if ( $_SESSION['login'] == 'Szymon Ch.')
@@ -577,13 +559,13 @@ if (isset($_POST['ostatnie_parametry']))
 						echo "<option value='" . $_POST['osoba_odpowiedzialna'] . "' >" . $_POST['osoba_odpowiedzialna'] . "</option>";
 					}
 
-					/*foreach ($Uzytkownicy as $key => $value) {
-					 $value=iconv("iso-8859-2", "utf-8", $value);
+					foreach ($Uzytkownicy as $key => $value) {
+					// $value=iconv("iso-8859-2", "utf-8", $value);
 
 						printf("<option value='%s'>%s</option>",$value,$value);
-					}*/
+					}
 
-                  echo "
+                  /*echo "
                   		<option Value='Szymon Ch.'>Szymon Ch.</option>
                         <option Value='Patryk Z.'>Patryk Z.</option>
                         <option Value='Magda K.'>Magda K.</option>
@@ -595,7 +577,7 @@ if (isset($_POST['ostatnie_parametry']))
                         <option Value='Mateusz P.'>Mateusz P.</option>
                         <option Value='Wojtek H.'>Wojtek H.</option>
                          <option Value='Wiesław B.'>Wiesław B.</option>
-                     ";
+                     ";*/
 
                 }
                 else {
@@ -802,16 +784,8 @@ if (isset($_POST['ostatnie_parametry']))
 			}
 
 			if (isset($_POST['zapisz']) || isset($_POST['modyfikuj']) || isset($_POST['usun'])) {
-				//funkcja filtrująca dane
-				function filtruj($zmienna) {
-					$data = trim($zmienna);
-					//usuwa spacje, tagi
-					$data = stripslashes($zmienna);
-					//usuwa slashe
-					$data = htmlspecialchars($zmienna);
-					//zamienia tagi html na czytelne znaki aby w formularzu nie wpisać szkodliwego kodu
-					return $zmienna;
-				}
+				
+				require_once ('funkcje.php');
 
 				//Resetujemy komunikaty
 				//$_SESSION['sukces']=FALSE;

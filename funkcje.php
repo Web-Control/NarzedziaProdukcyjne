@@ -25,54 +25,74 @@ function IsoToUtf8($str)
 }
 
 //Robimy liste asortymentu. Zapytanie do bazy o obecny asortyment
-	function asortyment($tablica)
+	function ListaAsortymentu($tablica)
 	{
-	if ($stmt = $mysqli -> prepare("SELECT Asortyment FROM AsortymentSuszu "))
-		{
-			$stmt -> execute();
-			$stmt -> bind_result($Obecny_asortyment);
-			$stmt -> store_result();
+	GLOBAL $mysqli;//Ze względu na Variable Scope
+		if (mysqli_connect_errno()) {
 
-			if ($stmt->num_rows > 0)
+			printf("<div class='alert alert-danger'><span class='glyphicon glyphicon-thumbs-down'></span>&nbsp;<strong>Uwaga!</strong>&nbspBrak połączenia z serwerem MySQL. Kod błędu: %s\n</div>", mysqli_connect_error());
+
+			} else
+			{
+			if ($stmt = $mysqli -> prepare("SELECT Asortyment FROM AsortymentSuszu "))
 				{
-					/* Wyciągamy dane z zapytania sql i zapisujemy do tablicy  */
-		    		while ($stmt->fetch())
-					 {
-						static $i=0;
-						$tablica[$i]=$Obecny_asortyment;
-						$i++;
-		    		}
-	    		}
-
-				return $tablica;
-		}
+					$stmt -> execute();
+					$stmt -> bind_result($Obecny_asortyment);
+					$stmt -> store_result();
+		
+					if ($stmt->num_rows > 0)
+						{
+							/* Wyciągamy dane z zapytania sql i zapisujemy do tablicy  */
+				    		while ($stmt->fetch())
+							 {
+								static $i=0;
+								$tablica[$i]=$Obecny_asortyment;
+								$i++;
+				    		}
+			    		}
+		
+						return $tablica;
+				}
+			}
 
 	}
 
 //Robimy liste użytkowników.
-	function uzytkownicy($tablica)
+	function ListaUzytkownikow($tablica)
 	{
-	if ($stmt = $mysqli -> prepare("SELECT Login FROM Uzytkownicy"))
-		{
-			$stmt -> execute();
-			$stmt -> bind_result($Uzytkownik);
-			$stmt -> store_result();
+		GLOBAL $mysqli;//Ze względu na Variable Scope
 
-			if ($stmt->num_rows > 0)
+			if (mysqli_connect_errno()) {
+
+			printf("<div class='alert alert-danger'><span class='glyphicon glyphicon-thumbs-down'></span>&nbsp;<strong>Uwaga!</strong>&nbspBrak połączenia z serwerem MySQL. Kod błędu: %s\n</div>", mysqli_connect_error());
+
+			} else
 				{
-					/* Wyciągamy dane z zapytania sql i zapisujemy do tablicy  */
-		    		while ($stmt->fetch())
-					 {
-						static $a=0;
-						$tablica[$a]=$Uzytkownik;
-						$a++;
-		    		}
-	    		}
+					if ($stmt = $mysqli -> prepare("SELECT Login FROM Uzytkownicy WHERE LOGIN NOT LIKE '%Daniel J.%' ORDER BY Login ASC"))
+					{
+						$stmt -> execute();
+						$stmt -> bind_result($Uzytkownik);
+						$stmt -> store_result();
 
-				return $tablica;
+						if ($stmt->num_rows > 0)
+							{
+								/* Wyciągamy dane z zapytania sql i zapisujemy do tablicy  */
+					    		while ($stmt->fetch())
+								 {
+									static $a=0;
+									$tablica[$a]=$Uzytkownik;
+									$a++;
+					    		}
+								 
+								 return $tablica;
+				    		}
+
+					}
+				}
+
+				
 		}
 
-	}
 
 //Funkcja znajduje ciąg znaków w innym ciągu znaków i zaznacza go kolorem
 function nadaj_kolor_w_tresci($tresc,$znaki,$kolor)

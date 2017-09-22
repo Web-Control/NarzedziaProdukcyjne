@@ -42,21 +42,22 @@ if ($_POST['rejestruj'] && isset($haslo1) && isset($haslo2)&&($_SESSION['login']
 	if ($haslo1 == $haslo2) {
 		$hashed_haslo = password_hash($haslo2, PASSWORD_DEFAULT);
 
-		/* Łączymy się z serwerem */
-		$mysqli = new mysqli('mysql530int.cp.az.pl', 'u6001900_szymon', 'mNa5YWLL', 'db6001900_RaportyWilgotnosci');
+		 /* Łączymy się z serwerem */
+		require_once ('polaczenie_z_baza.php');
 
 		if (mysqli_connect_errno()) {
 			printf("<div class='alert alert-danger'><span class='glyphicon glyphicon-thumb-down'></span>&nbsp<strong>Uwaga!</strong>&nbspBrak połączenia z serwerem MySQL. Kod błędu: %s\n</div>.", mysqli_connect_error());
 		} else {
-			/* Utworzenie zapytania */
-			$query = "INSERT INTO Uzytkownicy (Login,Haslo) VALUES ('$login','$hashed_haslo')";//"INSERT INTO Uzytkownicy (Login,Haslo) VALUES ('$login','$hashed_haslo')";
-			/*Przesłanie zapytania do bazy*/
-			$result = $mysqli -> query($query);
+			if($stmt=$mysqli->prepare("INSERT INTO Uzytkownicy (Login,Haslo) VALUES ('$login','$hashed_haslo')"))
+			{
+				$stmt -> execute();
+				$stmt -> store_result();
+				
 			/*Sprawdzamy czy wpis do bazy został wykonany*/
-			if (mysqli_affected_rows($mysqli) > 0) {
+			if ($stmt->affected_rows > 0) {
 				$_SESSION['dokonano_rejestracji'] = 1;
 			}
-			if (mysqli_affected_rows($mysqli) == 0 || mysqli_affected_rows($mysqli) < 0) {
+			if ($stmt->affected_rows == 0 || $stmt->affected_rows < 0) {
 
 				echo "<div class='alert alert-warning'><span class='glyphicon glyphicon-alert'></span>&nbsp<strong>Uwaga!&nbsp Nie dokonano zapisu. Możliwy błąd zapytania.</strong></div>";
 			}
@@ -68,6 +69,7 @@ if ($_POST['rejestruj'] && isset($haslo1) && isset($haslo2)&&($_SESSION['login']
 
 			$mysqli -> close();
 			$_SESSION['dokonano_rejestracji'] = 0;
+			}
 		}
 	} else {echo "<div class='alert alert-warning'><span class='glyphicon glyphicon-alert'></span>&nbsp<strong>Uwaga!</strong>&nbsp Hasła nie pasują do siebie. Wpisz je ponownie.</div>";
 	}
