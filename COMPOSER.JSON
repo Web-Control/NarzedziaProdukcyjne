@@ -1,0 +1,10 @@
+{
+    "name": "ifsnop/MySQLDump",
+    "description": "Mysql Dump Library",
+    "keywords": ["mysql dump"],
+    "license": "GPL",
+    "require": {
+        "ifsnop/mysqldump-php":"2.*"
+}
+    
+}

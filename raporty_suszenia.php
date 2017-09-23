@@ -117,18 +117,8 @@ if ($_SESSION['sukces']) {
 	error_reporting(E_ALL);*/
 
 			if (isset($_POST['parametry'])) {
-
-				//funkcja filtrująca dane
-				function filtruj($zmienna) {
-					$data = trim($zmienna);
-					//usuwa spacje, tagi
-					$data = stripslashes($zmienna);
-					//usuwa slashe
-					$data = htmlspecialchars($zmienna);
-					//zamienia tagi html na czytelne znaki aby w formularzu nie wpisać szkodliwego kodu
-					return $zmienna;
-				}
-
+			require_once 'funkcje.php';
+		
 				/*Odbieramy dane z formularza*/
 				$asortyment = filtruj($_POST['asortyment']);
 				$nr_suszarni = filtruj($_POST['nr_suszarni']);
@@ -196,17 +186,8 @@ if (isset($_POST['ostatnie_parametry']))
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);*/
-
-	//funkcja filtrująca dane
-	function filtruj($zmienna) {
-	$data = trim($zmienna);
-	//usuwa spacje, tagi
-	$data = stripslashes($zmienna);
-	//usuwa slashe
-	$data = htmlspecialchars($zmienna);
-	//zamienia tagi html na czytelne znaki aby w formularzu nie wpisać szkodliwego kodu
-	return $zmienna;
-	}
+	 
+	require_once 'funkcje.php';
 
 	/*Odbieramy dane z formularza*/
 	$asortyment = filtruj($_POST['asortyment']);
@@ -1320,16 +1301,10 @@ if (isset($_POST['ostatnie_parametry']))
 			//Obróbka formularza "Informcje dodatkowe"
 			if (isset($_POST['info_dodatkowe']))
 			{
-
-				function filtruj($zmienna) {
-					$data = trim($zmienna);
-					//usuwa spacje, tagi
-					$data = stripslashes($zmienna);
-					//usuwa slashe
-					$data = htmlspecialchars($zmienna);
-					//zamienia tagi html na czytelne znaki aby w formularzu nie wpisać szkodliwego kodu
-					return $zmienna;
-				}
+				/*ob_end_clean();
+				ini_set('display_errors', 1);
+				ini_set('display_startup_errors', 1);
+				error_reporting(E_ALL);*/	
 
 				/*Odbieramy dane z formularza*/
 				$asortyment = filtruj($_POST['asortyment']);
