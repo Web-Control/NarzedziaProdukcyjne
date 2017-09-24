@@ -24,7 +24,7 @@ if (isset($_GET['wyloguj']) == 1) {
 						if ($_GET['raporty_suszenia']==1||$_GET['raporty_suszenia_odczyt']==1||$_GET['raporty_suszenia_pobierz']==1||$_GET['raporty_sterylizacja']==1||$_GET['raporty_sterylizacji_odczyt']==1||$_GET['raporty_sterylizacji_pobierz']==1||$_GET['statystyki_sterylizacji']==1 ||$_GET['statystyki_suszenia']==1) {
 						include('boczne_menu.php');
 						}
-						if ($_GET['rejestracja']==1|| $_GET['usuwanie_plikow']==1|| $_GET['dodawanie_asortymentu']==1) {
+						if ($_GET['rejestracja']==1|| $_GET['usuwanie_plikow']==1|| $_GET['dodawanie_asortymentu']==1 || $_GET['kopia_zapasowa']==1) {
 						include('boczne_menu2.php');
 						}
 					}
@@ -76,6 +76,9 @@ if (isset($_GET['wyloguj']) == 1) {
 						}
 						if ($_GET['usuwanie_plikow']==1) {
 						include 'usuwanie_plikow.php';
+						}
+						if ($_GET['kopia_zapasowa']==1) {
+						include 'kopia_zapasowa.php';
 						}
 					}
 					else{
