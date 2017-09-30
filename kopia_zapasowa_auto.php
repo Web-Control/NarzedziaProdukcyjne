@@ -2,12 +2,23 @@
 require 'vendor/autoload.php';
 use Ifsnop\Mysqldump as IMysqldump;
 
-	ob_end_clean();
+	/*ob_end_clean();
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
-	error_reporting(E_ALL);
+	error_reporting(E_ALL);*/
 
 	$data=date("Y-m-d");
+
+	//Usuwamy dotychczasowe kopie bedące na serwerze
+	$katalog_bazy="kopia_bazy/";
+	$pliki_do_usuniecia=scandir($katalog_bazy);
+	if ($pliki_do_usuniecia>2) //Sprawdzamy czy są jakieś pliki, 2 poniewaz dwa pierwsze elementy tablicy to tylko kropki zwrócone przez funkcje scandir
+	{
+		for ($i=2; $i <count($pliki_do_usuniecia) ; $i++) {
+			 $plik_do_usuniecia="kopia_bazy/$pliki_do_usuniecia[$i]";
+			unlink($plik_do_usuniecia);
+		}
+	}	
 	
 	//Tworzymy kopie bazy danych sql
 	$nazwa_pliku="Narzedzia_Produkcyjne_Online_kopia_bazy_danych_$data.sql";
@@ -20,7 +31,7 @@ use Ifsnop\Mysqldump as IMysqldump;
 		    echo 'mysqldump-php error: ' . $e->getMessage();
 		}
 		
-		//Poniżej robimy zapasową kopię zdjeć i dokumentów należących do raportów suszenia
+		//Poniżej robimy zapasową kopię zdjeć i dokumentów należących do raportów suszenia i sterylizacji
 
 		//Ścieżki do katalogu ze zdjęciami
 		$katalog_zdjec_suszenia = "grafika/zdjecia_raporty_suszenia/";
@@ -146,6 +157,8 @@ use Ifsnop\Mysqldump as IMysqldump;
 									 	- Kopia bazy danych: <a href='$kopia_zip_sciezka'>$kopia_zip_nazwa</a><br / >
 									 	- Kopia katalogu zdjęć suszenia: <a href='$kopia_zip_zdjecia_suszenia_sciezka'>$kopia_zip_katalogu_zdjec_suszenia_nazwa</a> <br / >
 									 	- Kopia katalogu zdjęć sterylizacji: <a href='$kopia_zip_zdjecia_sterylizacji_sciezka'>$kopia_zip_katalogu_zdjec_sterylizacji_nazwa</a> <br / ><br / >
+									 	
+									 	Kopie będą przechowywane na serwerze przez 7 dni.<br / ><br / >
 									 	
 										Wiadomość wysłana z aplikacji sieciowej - Narzędzia Produkcyjne Online Suszarnia Warzyw Jaworski<br / >
 										Proszę na nią nie odpowiadać.<br / ><br / >
