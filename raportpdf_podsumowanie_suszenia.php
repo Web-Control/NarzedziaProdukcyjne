@@ -141,7 +141,7 @@ if (isset($_POST['pdf']) || isset($_POST['wyslij'])) {
 								$stmt->data_seek(0);
 									while ($stmt->fetch()) {
 										
-										if ($y1>180) {
+										if ($y1>170) {
 										$pdf -> AddPage();
 										
 										//Nag?????

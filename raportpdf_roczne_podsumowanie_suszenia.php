@@ -148,7 +148,7 @@ if (isset($_POST['pdf']) || isset($_POST['wyslij'])) {
 			$y = $pdf -> GetY();
 			$y1 = $y + 7;
 			
-					if ($y1>180) {
+					if ($y1>170) {
 					$pdf -> AddPage();
 					
 					$pdf -> SetFont('arial_ce', 'B', 16);

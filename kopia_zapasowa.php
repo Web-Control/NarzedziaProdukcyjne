@@ -25,6 +25,7 @@ use Ifsnop\Mysqldump as IMysqldump;
 
 	$wykonano_kopie_bazy_danych="";
 	$wykonano_kopie_katalogu_zdjec="";
+	$wykonano_kopie_katalogu_zdjec2="";
 
 	$data=date("Y-m-d");
 	$nazwa_pliku="Narzedzia_Produkcyjne_Online_kopia_bazy_danych_$data.sql";
@@ -40,7 +41,7 @@ use Ifsnop\Mysqldump as IMysqldump;
 			if (file_exists($sciezka_do_pliku)) {
 				echo '<div class="alert alert-success alert-dismissable fade in">
 					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Wykonano kopię zapasową bazy danych. Kopia znajduje się na serwerze w katalogu "kopia_bazy". </div><br / >';
+				<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Wykonano kopię zapasową bazy danych. Kopia znajduje się na serwerze w katalogu "kopia_bazy". </div>';
 
 				$zip = new ZipArchive;
 				$kopia_zip = fopen("kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_danych_$data.zip", "w");//Bez wcześniejszego utworzenia pliku ZipArchive nie działa
@@ -56,17 +57,6 @@ use Ifsnop\Mysqldump as IMysqldump;
 					$wykonano_kopie_bazy_danych=TRUE;
 					echo "<br>Pobierz plik: <a href='$kopia_zip_sciezka'>$kopia_zip_nazwa</a>";
 
-				/*header('Content-Description: File Transfer');
-			    header('Content-Type: application/zip');
-			    header('Content-Disposition: attachment; filename="'.basename($kopia_zip_sciezka).'"');
-			    header('Expires: 0');
-			    header('Cache-Control: must-revalidate');
-			    header('Pragma: public');
-			    header('Content-Length: ' . filesize($kopia_zip_sciezka));
-			    readfile($kopia_zip_sciezka);
-			    exit;*/
-
-
 				}
 
 
@@ -81,17 +71,19 @@ use Ifsnop\Mysqldump as IMysqldump;
 
 		//Ścieżki do katalogu ze zdjęciami
 		$katalog_zdjec_suszenia = "grafika/zdjecia_raporty_suszenia/";
+		$katalog_zdjec_sterylizacji = "grafika/zdjecia_raporty_sterylizacji/";
 
 		// Sprawdzamy katalogi i zapisujemy wyniki-liste zdjec do zmiennej, która jest tablicą
 		$zdjecia_raportow_suszenia = scandir($katalog_zdjec_suszenia);
+		$zdjecia_raportow_sterylizacji = scandir($katalog_zdjec_sterylizacji);
 		//print_r($zdjecia_raportow_suszenia);
 
-		if (count($zdjecia_raportow_suszenia>0))
+		if (count($zdjecia_raportow_suszenia)>2) //2 poniewaz dwa pierwsze elementy tablicy to tylko kropki zwrócone przez funkcje scandir
 		{
 
-			$kopia_zip_zdjecia = fopen("kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_$data.zip", "w");//Bez wcześniejszego utworzenia pliku ZipArchive nie działa
-			$kopia_zip_zdjecia_sciezka="kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_$data.zip";
-			$kopia_zip_zdjecia_nazwa="Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_$data.zip";
+			$kopia_zip_zdjecia = fopen("kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_suszenia_$data.zip", "w");//Bez wcześniejszego utworzenia pliku ZipArchive nie działa
+			$kopia_zip_zdjecia_sciezka="kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_suszenia_$data.zip";
+			$kopia_zip_zdjecia_nazwa="Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_suszenia_$data.zip";
 
 			$zip = new ZipArchive;
 			$zip->open($kopia_zip_zdjecia_sciezka,  ZipArchive::CREATE);
@@ -106,12 +98,12 @@ use Ifsnop\Mysqldump as IMysqldump;
 
 				    $zip->close();
 
-					if (file_exists($sciezka_do_pliku))
+					if (file_exists($kopia_zip_zdjecia_sciezka))
 					{
 						$wykonano_kopie_katalogu_zdjec=TRUE;
-						echo '<div class="alert alert-success alert-dismissable fade in">
+						echo '<br><div class="alert alert-success alert-dismissable fade in">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Wykonano kopię zapasową zdjęć należących do raportów suszenia. Kopia znajduje się na serwerze w katalogu "kopia_bazy". </div><br / >';
+						<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Wykonano kopię zapasową zdjęć należących do raportów suszenia. Kopia znajduje się na serwerze w katalogu "kopia_bazy". </div>';
 
 
 						echo "<br>Pobierz plik: <a href='$kopia_zip_zdjecia_sciezka'>$kopia_zip_zdjecia_nazwa</a>";
@@ -119,16 +111,52 @@ use Ifsnop\Mysqldump as IMysqldump;
 				}
 		}else
 			{
-			echo '<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span>&nbsp<strong>Info!</strong>&nbsp Brak zdjęć załączonych do raportów.</div>';
+			echo '<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span>&nbsp<strong>Info!</strong>&nbsp Brak zdjęć załączonych do raportów suszenia.</div>';
+			}
+		
+			
+		if (count($zdjecia_raportow_sterylizacji)>2)//2 poniewaz dwa pierwsze elementy tablicy to tylko kropki zwrócone przez funkcje scandir
+		{
+
+			$kopia_zip_zdjecia = fopen("kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_sterylizacji_$data.zip", "w");//Bez wcześniejszego utworzenia pliku ZipArchive nie działa
+			$kopia_zip_zdjecia_sciezka="kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_sterylizacji_$data.zip";
+			$kopia_zip_zdjecia_nazwa="Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_sterylizacji_$data.zip";
+
+			$zip = new ZipArchive;
+			$zip->open($kopia_zip_zdjecia_sciezka,  ZipArchive::CREATE);
+
+				if ($zip->open($kopia_zip_zdjecia_sciezka) === TRUE)
+				{
+					for ($i=2; $i <count($zdjecia_raportow_suszenia) ; $i++)//i=2 poniewaz dwa pierwsze elementy tablicy to tylko kropki zwrócone przez funkcje scandir
+					{
+						$plik ="grafika/zdjecia_raporty_sterylizacji/$zdjecia_raportow_sterylizacji[$i]";
+						$zip->addFile($plik);
+					}
+
+				    $zip->close();
+
+					if (file_exists($kopia_zip_zdjecia_sciezka))
+					{
+						$wykonano_kopie_katalogu_zdjec2=TRUE;
+						echo '<br><div class="alert alert-success alert-dismissable fade in">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Wykonano kopię zapasową zdjęć należących do raportów sterylizacji. Kopia znajduje się na serwerze w katalogu "kopia_bazy". </div>';
+
+
+						echo "<br>Pobierz plik: <a href='$kopia_zip_zdjecia_sciezka'>$kopia_zip_zdjecia_nazwa</a>";
+					}
+				}
+		}else
+			{
+			echo '<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span>&nbsp<strong>Info!</strong>&nbsp Brak zdjęć załączonych do raportów sterylizacji.</div>';
 			}
 
-	if ($wykonano_kopie_bazy_danych || $wykonano_kopie_katalogu_zdjec) {
+	if ($wykonano_kopie_bazy_danych || $wykonano_kopie_katalogu_zdjec || $wykonano_kopie_katalogu_zdjec2) {
 
 		echo "<br><br><br><br><div class='alert alert-info'><span class='glyphicon glyphicon-info-sign'></span>&nbsp<strong>Info!</strong>&nbsp W celu przywrócenia bazy danych plik sql, który znajduje się w zip należy importować do bazy danych za pomocą narzędzia
-			  'phpmyadmn' w pulpcie zarządzania serwerem.</div><br><br>";
-
-		echo "<div class='alert alert-info'><span class='glyphicon glyphicon-info-sign'></span>&nbsp<strong>Info!</strong>&nbsp W celu przywrócenia zdjeć zawartych w raportach suszenia należy je przesłać do następującego katalogu niniejszej aplikacji: '$katalog_zdjec_suszenia'</div><br><br>";
-
+			  'phpmyadmn' w pulpcie zarządzania serwerem.<br><br>
+			  W celu przywrócenia zdjeć zawartych w raportach suszenia oraz sterylizacji należy je przesłać do następujących katalogów niniejszej aplikacji: '$katalog_zdjec_suszenia' oraz '$katalog_zdjec_sterylizacji'
+			  </div><br><br>";
 
 	}
 

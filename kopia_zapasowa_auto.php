@@ -8,6 +8,8 @@ use Ifsnop\Mysqldump as IMysqldump;
 	error_reporting(E_ALL);
 
 	$data=date("Y-m-d");
+	
+	//Tworzymy kopie bazy danych sql
 	$nazwa_pliku="Narzedzia_Produkcyjne_Online_kopia_bazy_danych_$data.sql";
 	$sciezka_do_pliku="kopia_bazy/$nazwa_pliku";
 
@@ -17,6 +19,75 @@ use Ifsnop\Mysqldump as IMysqldump;
 		} catch (\Exception $e) {
 		    echo 'mysqldump-php error: ' . $e->getMessage();
 		}
+		
+		//Poniżej robimy zapasową kopię zdjeć i dokumentów należących do raportów suszenia
+
+		//Ścieżki do katalogu ze zdjęciami
+		$katalog_zdjec_suszenia = "grafika/zdjecia_raporty_suszenia/";
+		$katalog_zdjec_sterylizacji = "grafika/zdjecia_raporty_sterylizacji/";
+
+		// Sprawdzamy katalogi i zapisujemy wyniki-liste zdjec do zmiennej, która jest tablicą
+		$zdjecia_raportow_suszenia = scandir($katalog_zdjec_suszenia);
+		$zdjecia_raportow_sterylizacji = scandir($katalog_zdjec_sterylizacji);
+		//print_r($zdjecia_raportow_suszenia);
+		$kopia_zip_zdjecia_suszenia_sciezka="";
+		$kopia_zip_zdjecia_sterylizacji_sciezka="";
+		
+		if (count($zdjecia_raportow_suszenia)>2) //2 poniewaz dwa pierwsze elementy tablicy to tylko kropki zwrócone przez funkcje scandir
+		{
+
+			$kopia_zip_zdjecia = fopen("kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_suszenia_$data.zip", "w");//Bez wcześniejszego utworzenia pliku ZipArchive nie działa
+			$kopia_zip_zdjecia_sciezka="kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_suszenia_$data.zip";
+			$kopia_zip_zdjecia_nazwa="Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_suszenia_$data.zip";
+
+			$zip = new ZipArchive;
+			$zip->open($kopia_zip_zdjecia_sciezka,  ZipArchive::CREATE);
+
+				if ($zip->open($kopia_zip_zdjecia_sciezka) === TRUE)
+				{
+					for ($i=2; $i <count($zdjecia_raportow_suszenia) ; $i++)//i=2 poniewaz dwa pierwsze elementy tablicy to tylko kropki zwrócone przez funkcje scandir
+					{
+						$plik ="grafika/zdjecia_raporty_suszenia/$zdjecia_raportow_suszenia[$i]";
+						$zip->addFile($plik);
+					}
+
+				    $zip->close();
+
+					if (file_exists($kopia_zip_zdjecia_sciezka))
+					{
+						$kopia_zip_zdjecia_suszenia_sciezka=$kopia_zip_zdjecia_sciezka;
+					}
+				}
+		}
+		
+			
+		if (count($zdjecia_raportow_sterylizacji)>2)//2 poniewaz dwa pierwsze elementy tablicy to tylko kropki zwrócone przez funkcje scandir
+		{
+
+			$kopia_zip_zdjecia = fopen("kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_sterylizacji_$data.zip", "w");//Bez wcześniejszego utworzenia pliku ZipArchive nie działa
+			$kopia_zip_zdjecia_sciezka="kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_sterylizacji_$data.zip";
+			$kopia_zip_zdjecia_nazwa="Narzedzia_Produkcyjne_Online_kopia_bazy_zdjec_sterylizacji_$data.zip";
+
+			$zip = new ZipArchive;
+			$zip->open($kopia_zip_zdjecia_sciezka,  ZipArchive::CREATE);
+
+				if ($zip->open($kopia_zip_zdjecia_sciezka) === TRUE)
+				{
+					for ($i=2; $i <count($zdjecia_raportow_suszenia) ; $i++)//i=2 poniewaz dwa pierwsze elementy tablicy to tylko kropki zwrócone przez funkcje scandir
+					{
+						$plik ="grafika/zdjecia_raporty_sterylizacji/$zdjecia_raportow_sterylizacji[$i]";
+						$zip->addFile($plik);
+					}
+
+				    $zip->close();
+
+					if (file_exists($kopia_zip_zdjecia_sciezka))
+					{
+						$kopia_zip_zdjecia_sterylizacji_sciezka=$kopia_zip_zdjecia_sciezka;
+					}
+				}
+		}
+		
 
 			if (file_exists($sciezka_do_pliku)) {
 
@@ -24,7 +95,9 @@ use Ifsnop\Mysqldump as IMysqldump;
 				$kopia_zip = fopen("kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_danych_$data.zip", "w");//Bez wcześniejszego utworzenia pliku ZipArchive nie działa
 				$kopia_zip_sciezka="kopia_bazy/Narzedzia_Produkcyjne_Online_kopia_bazy_danych_$data.zip";
 				$kopia_zip_nazwa="Narzedzia_Produkcyjne_Online_kopia_bazy_danych_$data.zip";
-
+				$kopia_zip_katalogu_zdjec_suszenia_nazwa="Narzedzia_Produkcyjne_Online_kopia_katalogu_zdjec_suszenia_$data.zip";
+				$kopia_zip_katalogu_zdjec_sterylizacji_nazwa="Narzedzia_Produkcyjne_Online_kopia_katalogu_zdjec_sterylizacji_$data.zip";
+					
 				$zip->open($kopia_zip_sciezka,  ZipArchive::CREATE);
 
 				if ($zip->open($kopia_zip_sciezka) === TRUE) {
@@ -68,15 +141,23 @@ use Ifsnop\Mysqldump as IMysqldump;
 
 						$mail -> Subject = 'Zapasowa kopia bazy danych.';
 						$mail -> Body = "Witam.<br / ><br / >
-										W załączniku znajduje się zapasowa kopia bazy danych Narzędzi Produkcyjnych Online z dnia: $data. <br / >
-									 	W celu jej użycia rozpakuj plik zip a plik sql importuj do bazy danych.<br / ><br / >
+										W załącznikach znajdują się zapasowa kopia bazy danych oraz katalogów zdjeć z raportów suszenia i sterylizacji aplikacji Narzędzia Produkcyjne Online z dnia: $data. <br / >
+									 	Możesz je również pobrać klikając poniższe linki:<br / >
+									 	- Kopia bazy danych: <a href='$kopia_zip_sciezka'>$kopia_zip_nazwa</a><br / >
+									 	- Kopia katalogu zdjęć suszenia: <a href='$kopia_zip_zdjecia_suszenia_sciezka'>$kopia_zip_katalogu_zdjec_suszenia_nazwa</a> <br / >
+									 	- Kopia katalogu zdjęć sterylizacji: <a href='$kopia_zip_zdjecia_sterylizacji_sciezka'>$kopia_zip_katalogu_zdjec_sterylizacji_nazwa</a> <br / ><br / >
+									 	
 										Wiadomość wysłana z aplikacji sieciowej - Narzędzia Produkcyjne Online Suszarnia Warzyw Jaworski<br / >
 										Proszę na nią nie odpowiadać.<br / ><br / >
 										Administrator: Szymon Chomej. Email: schomej@jaworski.com.pl";
 						$mail -> AltBody = 'Przepraszamy wystapił jakiś błąd tutaj powinna być treść wiadomości.';
 
-						$doc = $_SERVER["DOCUMENT_ROOT"].$kopia_zip_sciezka;
-						$mail -> AddStringAttachment($doc, $kopia_zip_nazwa);
+						$baza_sql = $_SERVER["DOCUMENT_ROOT"].$kopia_zip_sciezka;
+						$katalog_zdjec_suszenia=$_SERVER["DOCUMENT_ROOT"].$kopia_zip_zdjecia_suszenia_sciezka;
+						$katalog_zdjec_sterylizacji=$_SERVER["DOCUMENT_ROOT"].$kopia_zip_zdjecia_sterylizacji_sciezka;
+						$mail -> AddStringAttachment($baza_sql, $kopia_zip_nazwa);
+						$mail -> AddStringAttachment($katalog_zdjec_suszenia, $kopia_zip_katalogu_zdjec_suszenia_nazwa);
+						$mail -> AddStringAttachment($katalog_zdjec_sterylizacji, $kopia_zip_katalogu_zdjec_sterylizacji_nazwa);
 						$mail -> Send();
 
 					}
