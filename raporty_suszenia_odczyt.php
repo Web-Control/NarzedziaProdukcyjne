@@ -305,7 +305,7 @@
 					/* Wyświetlamy dane */
 					$stmt->data_seek(0);
    					while ($stmt->fetch()) {
-   					    printf ("<div id='tabela_wynikow'>%s. <br / >%s Hz<br / >%s &deg;C<br / >%s Hz<br / > %s Hz<br / >%s Hz<br / > %s Hz<br / > %s Hz<br / > %s Hz<br / >%s Hz<br / >%s min<br / >%s &deg;C<br / > %s &deg;C<br / >%s %% <br / > %s</div>", $Czas = substr($Czas, 0, 5),$Predkosc_Blanszownika,$Temperatura_Blanszownika,$V_Siatka7,$V_Siatka6,$V_Siatka5,$V_Siatka4,$V_Siatka3,$V_Siatka2,$V_Siatka1,$Czas_Suszenia,$Temp_Gorna,$Temp_Dolna,$Wilgotnosc,$Odpowiedzialny);
+   					    printf ("<div id='tabela_wynikow'>%s. <br / >%s Hz<br / >%s &deg;C<br / >%s Hz<br / > %s Hz<br / >%s Hz<br / > %s Hz<br / > %s Hz<br / > %s Hz<br / >%s Hz<br / >%s min<br / >%s &deg;C<br / > %s &deg;C<br / >%s %% <br / ><span class='osoba'> %s</span></div>", $Czas = substr($Czas, 0, 5),$Predkosc_Blanszownika,$Temperatura_Blanszownika,$V_Siatka7,$V_Siatka6,$V_Siatka5,$V_Siatka4,$V_Siatka3,$V_Siatka2,$V_Siatka1,$Czas_Suszenia,$Temp_Gorna,$Temp_Dolna,$Wilgotnosc,$Odpowiedzialny);
     					}
 
     					//Wyciągmy średnią wartość wilgotności

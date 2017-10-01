@@ -37,7 +37,7 @@ $login = filtruj($_POST['login']);
 $haslo1 = filtruj($_POST['haslo1']);
 $haslo2 = filtruj($_POST['haslo2']);
 
-if ($_POST['rejestruj'] && isset($haslo1) && isset($haslo2)&&($_SESSION['login']=='Szymon Ch.')) {
+if ($_POST['rejestruj'] && isset($haslo1) && isset($haslo2)&&($_SESSION['login']=='Chomej Sz.')) {
 
 	if ($haslo1 == $haslo2) {
 		$hashed_haslo = password_hash($haslo2, PASSWORD_DEFAULT);

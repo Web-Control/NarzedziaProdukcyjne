@@ -174,8 +174,13 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 			$pdf -> Cell(15, 5, "$Temp_Gorna *C");
 			$pdf -> SetXY($x1, 115);
 			$pdf -> Cell(15, 5, "$Wilgotnosc %");
+			
+			/*Zmieniamy kodowanie znak�w z UTF-8 na Windows-1250 poniewa� klasa fpdf nie wspiera UTF-8
+			co powoduje �e tekst z bazy danych nie pokazuje polskich znak�w */
+			$Osoba = iconv('UTF-8', 'windows-1250', $Odpowiedzialny);
 			$pdf -> SetXY($x1, 120);
-			$pdf -> Cell(17, 5, "$Odpowiedzialny");
+			$pdf -> SetFont('arial_ce', '', 7);
+			$pdf -> Cell(17, 5, "$Osoba");
 		}
 
 		//Wyci�gmy �redni� warto�� wilgotno�ci pocz�tkowej

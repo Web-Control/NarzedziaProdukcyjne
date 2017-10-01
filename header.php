@@ -40,7 +40,7 @@
        echo "<li ". $klasa ."><a href='index2.php?raporty_suszenia=1'>RAPORTY</a></li>
         <li ". $klasa2 ."><a href='index2.php?kontakt=1'>KONTAKT</a></li>";
 		}
-		if ($_SESSION['login']=='Szymon Ch.') {
+		if ($_SESSION['login']=='Chomej Sz.') {
 			echo "<li ". $klasa1 ."><a href='index2.php?rejestracja=1'>ADMIN</a></li>";
 		}
 ?>

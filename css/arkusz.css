@@ -116,11 +116,16 @@ hr
 }
 
 #tabela_wynikow {
-	width:73px;
+	width:80px;
 	display:inline-block;
 	margin:0 2px 10px 0;
 	/*border: 1px solid green;*/
 	font-size:13px;
+}
+
+.osoba {
+ font-size:0.8em;
+ color:black;
 }
 
 #klient_nazwa{
