@@ -94,7 +94,7 @@ ob_start()
 							//if ($captcha_success -> success == true) {
 							//if ($response["success"] == true) {
 
-							if (strlen($login) <= 11 && strlen($haslo) <= 11) {
+							if (strlen($login) <= 20 && strlen($haslo) <= 20) {
 
 								/* Łączymy się z serwerem */
 								$mysqli = new mysqli('mysql530int.cp.az.pl', 'u6001900_szymon', 'mNa5YWLL', 'db6001900_RaportyWilgotnosci');
