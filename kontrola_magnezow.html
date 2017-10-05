@@ -1,0 +1,146 @@
+<h1>Raport kontroli separatora magnetycznego</h1>
+<ul class="nav nav-tabs">
+<li class="active"><a href="index2.php?kontrola_magnezow=1">Tworzenie</a></li>
+<li><a href="">Odczyt</a></li>
+<li><a href="">Pobór</a></li>
+</ul>
+<br>
+
+<div id="formularz">
+    <div class="row" >
+        <div class="form-group">
+            <form action=""  id="karta_kontroli">
+                <fieldset>
+                        <legend>
+                                Twórz kartę kontroli separatora magnetycznego
+                        </legend>
+                        
+                            <div class="row">
+
+                                <div class="col-sm-4">
+                                    <label >Linia</label>
+                                    <select class="form-control" name="linia" id="linia" required>
+                                        <option value="Burak">Burak</option>
+                                        <option value="Marchew">Marchew</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-4">
+                                     <label >Data</label>
+                                    <input class="form-control" type="date" name="data" id="data" required/>    
+                                </div>
+
+                                <div class="col-sm-4">
+                                        <label >Godzina</label>
+                                       <input class="form-control" type="time" name="godzina" id="godzina" required/>    
+                                   </div>
+
+                            </div>
+                            <hr>
+                            <div class="row">
+                                 <div class="col-sm-4">
+                                    <label>Wynik kontroli i czyszczenia</label><br>
+                                    <input type="radio" name="wynik" id="wynik" value="OK" checked>OK &nbsp
+                                    <input type="radio" name="wynik" id="wynik" value="NOK">NOK
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            <div class="row">
+                            
+                                <div class="col-sm-4" >
+                                    <label>Uwagi</label>
+                                    <textarea class="form-control" name="uwagi" id="uwagi" rows="1" cols="30" maxlength="150" ></textarea>
+                                </div>
+
+                                <div class="col-sm-4">
+                                        <label >Osoba dokonująca kontroli</label>
+                                        <select class="form-control" name="osoba_kontrolujaca" id="osoba_kontrolujaca" required>
+                              <?php
+                              /*ob_end_clean();
+                    ini_set('display_errors', 1);
+                    ini_set('display_startup_errors', 1);
+                    error_reporting(E_ALL);*/
+                            /* Łączymy się z serwerem */
+                            require_once ('polaczenie_z_baza.php');  
+                              require_once ('funkcje.php');
+                              
+                          $Uzytkownicy=ListaUzytkownikow($Uzytkownicy);
+                
+                
+                              if ( $_SESSION['login'] == 'Chomej Sz.')
+                                {
+                                    if (isset($_POST['osoba_odpowiedzialna'])) {
+                                        echo "<option value='" . $_POST['osoba_odpowiedzialna'] . "' >" . $_POST['osoba_odpowiedzialna'] . "</option>";
+                                    }
+                
+                                    foreach ($Uzytkownicy as $key => $value) {
+                                    // $value=iconv("iso-8859-2", "utf-8", $value);
+                
+                                        printf("<option value='%s'>%s</option>",$value,$value);
+                                    }
+                
+                                  /*echo "
+                                          <option Value='Szymon Ch.'>Szymon Ch.</option>
+                                        <option Value='Patryk Z.'>Patryk Z.</option>
+                                        <option Value='Magda K.'>Magda K.</option>
+                                        <option Value='Krzysztof D.'>Krzysztof D.</option>
+                                        <option Value='Edward K.'>Edward K.</option>
+                                        <option Value='Mariusz Ś.'>Mariusz Ś.</option>
+                                        <option Value='Piotr M.'>Piotr M.</option>
+                                        <option Value='Krzysztof P.'>Krzysztof P.</option>
+                                        <option Value='Mateusz P.'>Mateusz P.</option>
+                                        <option Value='Wojtek H.'>Wojtek H.</option>
+                                         <option Value='Wiesław B.'>Wiesław B.</option>
+                                     ";*/
+                
+                                }
+                                else {
+                                  echo "
+                                  <option value='" . $_SESSION['login'] . "' >" . $_SESSION['login'] . "</option>
+                                  ";
+                                }
+                                ?>
+                                        </select>
+                                        </div>
+
+                            </div>
+                    <hr>
+                    <span class="glyphicon glyphicon-save"></span>&nbsp;<input type="submit" value="Zapisz" id="zapisz" name="zapisz"><br / ><br / ><br / >
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<br><br>
+
+<script>
+
+document.getElementById('karta_kontroli').addEventListener('submit', zapisz);
+
+function zapisz(e){
+    e.preventDefault();
+
+    var linia = document.getElementById('linia').value;
+    var data = document.getElementById('data').value;
+    var godzina = document.getElementById('godzina').value;
+    var wynik = document.getElementById('wynik').value;
+    var uwagi = document.getElementById('uwagi').value;
+    var osoba_kontrolujaca = document.getElementById('osoba_kontrolujaca').value;
+
+    var dane = "linia="+linia+"data="+data+"godzina="+godzina+"wynik="+wynik+"uwagi="+uwagi+"osoba_kontrolujaca="+osoba_kontrolujaca;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST','kontrola_magnezow_wpis.php', true);
+    xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+
+    xhr.onload = function(){
+        console.log(this.responseText);
+    }
+
+    xhr.send(dane);
+
+}
+
+</script>
