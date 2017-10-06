@@ -3,7 +3,7 @@ require_once ('funkcje.php');
 /* Łączymy się z serwerem */
 require_once ('polaczenie_z_baza.php');
 
-if (isset($_POST['zapisz'])) {
+if (1==1) {
     
     $linia = filtruj($_POST['linia']);
     $data = filtruj($_POST['data']);
@@ -11,6 +11,8 @@ if (isset($_POST['zapisz'])) {
     $wynik = filtruj($_POST['wynik']);
     $uwagi = filtruj($_POST['uwagi']);
     $osoba_kontrolujaca = filtruj($_POST['osoba_kontrolujaca']);
+	
+	echo "Linia: $linia, Data: $data, Godzina: $godzina, Wynik: $wynik, Uwagi: $uwagi, Osoba: $osoba_kontrolujaca";
 
     if (mysqli_connect_errno()) {
          printf("<div class='alert alert-danger'><span class='glyphicon glyphicon-thumbs-down'></span>&nbsp;<strong>Uwaga!</strong>&nbspBrak połączenia z serwerem MySQL. Kod błędu: %s\n</div>.", mysqli_connect_error());

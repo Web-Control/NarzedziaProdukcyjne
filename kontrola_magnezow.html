@@ -71,7 +71,7 @@
                               if ( $_SESSION['login'] == 'Chomej Sz.')
                                 {
                                     if (isset($_POST['osoba_odpowiedzialna'])) {
-                                        echo "<option value='" . $_POST['osoba_odpowiedzialna'] . "' >" . $_POST['osoba_odpowiedzialna'] . "</option>";
+                                        echo "<option value='" . $_POST['osoba_kontrolujaca'] . "' >" . $_POST['osoba_kontrolujaca'] . "</option>";
                                     }
                 
                                     foreach ($Uzytkownicy as $key => $value) {
@@ -79,20 +79,6 @@
                 
                                         printf("<option value='%s'>%s</option>",$value,$value);
                                     }
-                
-                                  /*echo "
-                                          <option Value='Szymon Ch.'>Szymon Ch.</option>
-                                        <option Value='Patryk Z.'>Patryk Z.</option>
-                                        <option Value='Magda K.'>Magda K.</option>
-                                        <option Value='Krzysztof D.'>Krzysztof D.</option>
-                                        <option Value='Edward K.'>Edward K.</option>
-                                        <option Value='Mariusz Ś.'>Mariusz Ś.</option>
-                                        <option Value='Piotr M.'>Piotr M.</option>
-                                        <option Value='Krzysztof P.'>Krzysztof P.</option>
-                                        <option Value='Mateusz P.'>Mateusz P.</option>
-                                        <option Value='Wojtek H.'>Wojtek H.</option>
-                                         <option Value='Wiesław B.'>Wiesław B.</option>
-                                     ";*/
                 
                                 }
                                 else {
@@ -106,7 +92,7 @@
 
                             </div>
                     <hr>
-                    <span class="glyphicon glyphicon-save"></span>&nbsp;<input type="submit" value="Zapisz" id="zapisz" name="zapisz"><br / ><br / ><br / >
+                    <span class="glyphicon glyphicon-save"></span>&nbsp;<input type="submit" value="Zapisz" id="zapisz" name="zapisz"><br><br><br >
 
                 </fieldset>
             </form>
@@ -129,7 +115,7 @@ function zapisz(e){
     var uwagi = document.getElementById('uwagi').value;
     var osoba_kontrolujaca = document.getElementById('osoba_kontrolujaca').value;
 
-    var dane = "linia="+linia+"data="+data+"godzina="+godzina+"wynik="+wynik+"uwagi="+uwagi+"osoba_kontrolujaca="+osoba_kontrolujaca;
+    var dane = "linia="+linia+"&data="+data+"&godzina="+godzina+"&wynik="+wynik+"&uwagi="+uwagi+"&soba_kontrolujaca="+osoba_kontrolujaca;
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST','kontrola_magnezow_wpis.php', true);
