@@ -20,7 +20,7 @@ if (1==1) {
 
                 IF ($stmt = $mysqli -> prepare ("INSERT INTO Karta_Kontroli_Separatora_Magnetycznego(Linia,Data,Godzina,Wynik,Uwagi,OsobaKontrolujaca) VALUES(?,?,?,?,?,?)"))
                 {
-                    $stmt->bind_param("ssss", $linia,$data,$godzina,$wynik,$osoba_kontrolujaca);
+                    $stmt->bind_param("ssssss", $linia,$data,$godzina,$wynik,$uwagi,$osoba_kontrolujaca);
                     $stmt->execute();
 
                     if ($stmt -> affected_rows == 0 || $stmt -> affected_rows < 0 ||$stmt->affected_rows==NULL) {

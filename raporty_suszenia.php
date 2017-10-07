@@ -789,7 +789,10 @@ if (isset($_POST['ostatnie_parametry']))
 				$temp_gorna = filtruj($_POST['temperatura_gorna']);
 				$temp_dolna = filtruj($_POST['temperatura_dolna']);
 				$odpowiedzialny = filtruj($_POST['osoba_odpowiedzialna']);
-
+	
+				$zapisano="";
+				$zmodyfikowano="";
+				$usunieto="";
 
 				$wszystkie_dane = array($asortyment, $data,$godzina, $nr_suszarni, $odpowiedzialny, $predkosc_blanszownika, $temp_dolna, $temp_gorna, $temperatura_blanszownika, $v_siatka1, $v_siatka2, $v_siatka3, $v_siatka4, $v_siatka5, $v_siatka6, $v_siatka7, $wilgotnosc);
 				$dane_tekstowe = array($asortyment,$odpowiedzialny);
@@ -988,20 +991,46 @@ if (isset($_POST['ostatnie_parametry']))
 						}
 
 							$czas_suszenia_godzinyminuty=convertToHoursMins($czas_suszenia, '%02d hours %02d minutes');
-
+					
 
 					if (isset($_POST['zapisz']))
 							{
-								if ($stmt = $mysqli -> prepare("INSERT INTO `" . $asortyment . "` (NrSuszarni,Data,Czas,PredkoscBlanszownika,TemperaturaBlanszownika,PredkoscSiatkiNr7,PredkoscSiatkiNr6,PredkoscSiatkiNr5,PredkoscSiatkiNr4,PredkoscSiatkiNr3,PredkoscSiatkiNr2,PredkoscSiatkiNr1,CzasSuszenia,TemperaturaGora,TemperaturaDol,Wilgotnosc,WykonawcaPomiaru) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"))
+								//S[rawdzamy czy taki wpis o tej dzacie i godzinie juz istnieje
+								if ($stmt = $mysqli -> prepare("SELECT Data,Czas,PredkoscBlanszownika,TemperaturaBlanszownika,PredkoscSiatkiNr7,PredkoscSiatkiNr6,PredkoscSiatkiNr5,PredkoscSiatkiNr4,PredkoscSiatkiNr3,PredkoscSiatkiNr2,PredkoscSiatkiNr1,CzasSuszenia,TemperaturaGora,TemperaturaDol,Wilgotnosc,WykonawcaPomiaru FROM `".$asortyment."` WHERE Data=? AND Czas = ? AND NrSuszarni=?"))
 						 		{
-
-								/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
-								$stmt -> bind_param("sssssssssssssssss", $nr_suszarni,$data,$godzina,$predkosc_blanszownika,$temperatura_blanszownika,$v_siatka7,$v_siatka6,$v_siatka5,$v_siatka4,$v_siatka3,$v_siatka2,$v_siatka1,$czas_suszenia,$temp_gorna,$temp_dolna,$wilgotnosc,$odpowiedzialny);
-								$stmt -> execute();
-						 		}
-								else {
-									echo '<div class="alert alert-danger"><strong>Info!</strong>&nbsp Błąd podczas zapisu do bazy danych.</div>';
-									}
+							 			$stmt->bind_param('sss', $data, $godzina, $nr_suszarni);
+							 			$stmt->execute();
+										$stmt->store_result();
+								
+							 		if ($stmt -> num_rows > 0 )
+							 		{
+							 			
+							 			echo "<div class='alert alert-warning'><strong>Ostrzeżenie!</strong>&nbsp Wpis o podanej dacie i godzinie już istnieje! Możesz go modyfikować lub usunąć. </div>";
+							 			
+							 		}else{
+											if ($stmt = $mysqli -> prepare("INSERT INTO `" . $asortyment . "` (NrSuszarni,Data,Czas,PredkoscBlanszownika,TemperaturaBlanszownika,PredkoscSiatkiNr7,PredkoscSiatkiNr6,PredkoscSiatkiNr5,PredkoscSiatkiNr4,PredkoscSiatkiNr3,PredkoscSiatkiNr2,PredkoscSiatkiNr1,CzasSuszenia,TemperaturaGora,TemperaturaDol,Wilgotnosc,WykonawcaPomiaru) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"))
+									 		{
+			
+											/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
+											$stmt -> bind_param("sssssssssssssssss", $nr_suszarni,$data,$godzina,$predkosc_blanszownika,$temperatura_blanszownika,$v_siatka7,$v_siatka6,$v_siatka5,$v_siatka4,$v_siatka3,$v_siatka2,$v_siatka1,$czas_suszenia,$temp_gorna,$temp_dolna,$wilgotnosc,$odpowiedzialny);
+											$stmt -> execute();
+											$stmt ->store_result();
+											
+												if ($stmt->affected_rows > 0) {
+													$zapisano=TRUE;
+												}
+											
+												if ($stmt -> affected_rows == 0 || $stmt -> affected_rows < 0 ||$stmt->affected_rows==NULL) {
+													$zapisano=FALSE;
+												echo "<div class='alert alert-warning'><strong>Ostrzeżenie!</strong>&nbsp Nie dokokano zapisu. Możliwy błąd zapytania.</div>";
+												}
+												
+									 		}
+											else {
+												echo '<div class="alert alert-danger"><strong>Info!</strong>&nbsp Błąd podczas zapisu do bazy danych.</div>';
+												}
+										}
+								}
 							}
 
 					if (isset($_POST['modyfikuj']))
@@ -1012,8 +1041,15 @@ if (isset($_POST['ostatnie_parametry']))
 								/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 								$stmt -> bind_param("ssssssssssssssss", $predkosc_blanszownika,$temperatura_blanszownika,$v_siatka7,$v_siatka6,$v_siatka5,$v_siatka4,$v_siatka3,$v_siatka2,$v_siatka1,$temp_gorna,$temp_dolna,$wilgotnosc,$odpowiedzialny,$nr_suszarni,$data,$godzina);
 								$stmt -> execute();
+								$stmt ->store_result();
+								
+								if ($stmt->affected_rows > 0) {
+									$zmodyfikowano=TRUE;
+								}
+								
 						 		}
 								else {
+									$zmodyfikowano=FALSE;
 									echo '<div class="alert alert-danger"><strong>Info!</strong>&nbsp Błąd podczas zapisu do bazy danych.</div>';
 									}
 							}
@@ -1026,21 +1062,20 @@ if (isset($_POST['ostatnie_parametry']))
 								/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 								$stmt -> bind_param("sss", $nr_suszarni,$data,$godzina);
 								$stmt -> execute();
+								$stmt ->store_result();
+								
+								if ($stmt->affected_rows > 0) {
+									$usunieto=TRUE;
+								}
 						 		}
 								else {
+									$usunieto=FALSE;
 									echo '<div class="alert alert-danger"><strong>Info!</strong>&nbsp Błąd podczas usuwania informacji z bazy danych.</div>';
 									}
 							}
 
-
-
-
-							if ($stmt -> affected_rows == 0 || $stmt -> affected_rows < 0 ||$stmt->affected_rows==NULL) {
-								echo "<div class='alert alert-warning'><strong>Ostrzeżenie!</strong>&nbsp Nie dokokano zapisu. Możliwy błąd zapytania.</div>";
-							}
-
 							//Uwaga Polecenie Union działa tutaj tylko gdy pobieramy wszystkie kolumny z tabeli w bazie danej - nie wiem dlaczego.
-							if ($stmt -> affected_rows > 0) {
+							if ($zapisano || $zmodyfikowano || $usunieto) {
 
 								if($stmt = $mysqli -> prepare ("SELECT Data,Czas,PredkoscBlanszownika,TemperaturaBlanszownika,PredkoscSiatkiNr7,PredkoscSiatkiNr6,PredkoscSiatkiNr5,PredkoscSiatkiNr4,PredkoscSiatkiNr3,PredkoscSiatkiNr2,PredkoscSiatkiNr1,CzasSuszenia,TemperaturaGora,TemperaturaDol,Wilgotnosc,WykonawcaPomiaru FROM `".$asortyment."` WHERE Data=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') AND NrSuszarni=?
 								UNION ALL
@@ -1283,12 +1318,12 @@ if (isset($_POST['ostatnie_parametry']))
 
     							$stmt->close();
 								}
-					}
+					}else {
+							echo '<div class="alert alert-info"><strong>Info!</strong>&nbsp Dokonano wpisu ale nie można dokonac odczytu z bazy danych.</div>';
+							}
 				}
 
-								else {
-									echo '<div class="alert alert-info"><strong>Info!</strong>&nbsp Dokonano wpisu ale nie można dokonac odczytu z bazy danych.</div>';
-									}
+								
 							$stmt->close();
 
 					}

@@ -113,9 +113,15 @@ function zapisz(e){
     var godzina = document.getElementById('godzina').value;
     var wynik = document.getElementById('wynik').value;
     var uwagi = document.getElementById('uwagi').value;
-    var osoba_kontrolujaca = document.getElementById('osoba_kontrolujaca').value;
+    
+   // var e = document.getElementById("elementId");
+	//var value = e.options[e.selectedIndex].value;
+	
+    var osoba_kontrolujaca = document.getElementById('osoba_kontrolujaca');
+    var osoba = osoba_kontrolujaca.options[osoba_kontrolujaca.selectedIndex].value;
+    var zapisz = document.getElementById('zapisz').value;
 
-    var dane = "linia="+linia+"&data="+data+"&godzina="+godzina+"&wynik="+wynik+"&uwagi="+uwagi+"&soba_kontrolujaca="+osoba_kontrolujaca;
+    var dane = "linia="+linia+"&data="+data+"&godzina="+godzina+"&wynik="+wynik+"&uwagi="+uwagi+"&osoba_kontrolujaca="+osoba;
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST','kontrola_magnezow_wpis.php', true);
