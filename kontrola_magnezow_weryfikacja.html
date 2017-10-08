@@ -1,8 +1,8 @@
 <h1>Raport kontroli separatora magnetycznego</h1>
 <ul class="nav nav-tabs">
-<li class="active"><a href="index2.php?kontrola_magnezow=1">Tworzenie</a></li>
+<li><a href="index2.php?kontrola_magnezow=1">Tworzenie</a></li>
 <li><a href="">Odczyt</a></li>
-<li><a href="index2.php?kontrola_magnezow_weryfikacja=1">Weryfikacja</a></li>
+<li class="active"><a href="index2.php?kontrola_magnezow_weryfikacja=1">Weryfikacja</a></li>
 </ul>
 <br>
 
@@ -10,9 +10,16 @@
     <div class="row" >
         <div class="form-group">
             <form action=""  id="karta_kontroli">
-                <fieldset>
+            	<?php
+					  if ( $_SESSION['login'] == 'Chomej Sz.' || $_SESSION['login'] == 'Kubrowska M.')
+                        {            	
+               		 	 echo "<fieldset>";
+               		 	}else {
+               		 			echo "<fieldset disabled>";
+               		 	 		}
+                ?>
                         <legend>
-                                Twórz kartę kontroli separatora magnetycznego
+                                Weryfikacja wpisów
                         </legend>
                         
                             <div class="row">
@@ -30,11 +37,6 @@
                                     <input class="form-control" type="date" name="data" id="data" required/>    
                                 </div>
 
-                                <div class="col-sm-4">
-                                        <label >Godzina</label>
-                                       <input class="form-control" type="time" name="godzina" id="godzina" required/>    
-                                   </div>
-
                             </div>
                             <hr>
                             <div class="row">
@@ -48,11 +50,6 @@
                             <hr>
                             <div class="row">
                             
-                                <div class="col-sm-4" >
-                                    <label>Uwagi</label>
-                                    <textarea class="form-control" name="uwagi" id="uwagi" rows="1" cols="30" maxlength="150" ></textarea>
-                                </div>
-
                                 <div class="col-sm-4">
                                         <label >Osoba dokonująca kontroli</label>
                                         <select class="form-control" name="osoba_kontrolujaca" id="osoba_kontrolujaca" required>
@@ -76,8 +73,11 @@
                 
                                     foreach ($Uzytkownicy as $key => $value) {
                                     // $value=iconv("iso-8859-2", "utf-8", $value);
+                                    
+                                    If ($value=='Chomej Sz.' || $value=='Kubrowska M.'){
                 
                                         printf("<option value='%s'>%s</option>",$value,$value);
+                                       }
                                     }
                 
                                 }
@@ -90,7 +90,7 @@
 
                             </div>
                     <hr>
-                    <span class="glyphicon glyphicon-save"></span>&nbsp;<input type="submit" value="Zapisz" id="zapisz" name="zapisz" value="zapisz"><br><br><br >
+                    <span class="glyphicon glyphicon-save"></span>&nbsp;<input type="submit" value="Weryfikuj" id="zapisz" name="zapisz"><br><br><br >
                    
                 </fieldset>
             </form>
@@ -99,27 +99,26 @@
 </div>
 <br><br>
 
+
 <script>
 
-document.getElementById('karta_kontroli').addEventListener('submit', zapisz);
- 
-function zapisz(e){
+document.getElementById('karta_kontroli').addEventListener('submit', weryfikuj);
+
+function weryfikuj(e){
     e.preventDefault();
 
     var linia = document.getElementById('linia').value;
     var data = document.getElementById('data').value;
-    var godzina = document.getElementById('godzina').value;
     var wynik = document.getElementById('wynik').value;
-    var uwagi = document.getElementById('uwagi').value;
-
+    
     var osoba_kontrolujaca = document.getElementById('osoba_kontrolujaca');
     var osoba = osoba_kontrolujaca.options[osoba_kontrolujaca.selectedIndex].value;
  
 
-    var dane = "linia="+linia+"&data="+data+"&godzina="+godzina+"&wynik="+wynik+"&uwagi="+uwagi+"&osoba_kontrolujaca="+osoba;
+    var dane = "linia="+linia+"&data="+data+"&wynik="+wynik+"&osoba_kontrolujaca="+osoba;
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST','kontrola_magnezow_wpis.php', true);
+    xhr.open('POST','kontrola_magnezow_weryfikacja.php', true);
     xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 
     xhr.onload = function(){
@@ -128,35 +127,7 @@ function zapisz(e){
 
     xhr.send(dane);
     
-}
 
- document.getElementById('karta_kontroli').addEventListener('submit', odczytaj);
- 
- function odczytaj(e){
-	e.preventDefault();
-	
-	var linia = document.getElementById('linia').value;
-    var data = document.getElementById('data').value;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET','kontrola_magnezow_odczyt.php?linia='+linia+'&data='+data, true);
-    xhr.onload = function(){
-    	if (this.status==200) {
-    		var dane = JSON.parse(this.responeText);
-    		var tabela_wynikowa = "";
-    		
-    		for (var i in dane) {
-			  tabela_wynikowa +='<table>'+
-			  					'<tr><td>Godzina</td><td>'+dane[i].Godzina+'</td>'+'<td>'+dane[i].Wynik_Kontroli+'</td>'+'<td>'+dane[i].Osoba_Kontrolujaca+'</td></tr>'+
-			  					'</table>'
-			}
-    		
-    		document.getElementById('odczyt_karty_kontroli').innerHTML = tabela_wynikow;
-    	}
-       
-    }
-
-    xhr.send();
-    
 }
 
 </script>
