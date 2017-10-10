@@ -99,6 +99,9 @@
 </div>
 <br><br>
 
+<div id="odczyt_karty_kontroli"></div>
+<br><br>
+
 <script>
 
 document.getElementById('karta_kontroli').addEventListener('submit', zapisz);
@@ -135,10 +138,16 @@ function zapisz(e){
  function odczytaj(e){
 	e.preventDefault();
 	
-	var linia = document.getElementById('linia').value;
+	var linia_form = document.getElementById('linia');
+    var linia1 = linia_form.options[linia_form.selectedIndex].value;
+
     var data = document.getElementById('data').value;
+
+    document.getElementById('odczyt_karty_kontroli').innerHTML = linia1+data;
+  
+    
     var xhr = new XMLHttpRequest();
-    xhr.open('GET','kontrola_magnezow_odczyt.php?linia='+linia+'&data='+data, true);
+    xhr.open('GET','kontrola_magnezow_odczyt.php?linia='+linia1+'&data='+data, true);
     xhr.onload = function(){
     	if (this.status==200) {
     		var dane = JSON.parse(this.responeText);
