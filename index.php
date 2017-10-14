@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Start the session
 session_start();
 ob_start()
@@ -29,10 +29,10 @@ ob_start()
 					<div class="row">
 						<div class="col-sm-4">
 							<span class="glyphicon glyphicon-user"></span><label>Login:</label>
-							<input class="form-control"  type="text" name="login" max="10" required>
+							<input class="form-control"  type="text" name="login" max="20" required>
 							<br / >
 							<span class="glyphicon glyphicon-lock"></span><label>Hasło:</label>
-							<input class="form-control"  type="password" name="haslo" max="10" required>
+							<input class="form-control"  type="password" name="haslo" max="20" required>
 							<!--<div class="g-recaptcha" data-sitekey="6LdFnBIUAAAAANfX1LSn0m7j0RhveRY0Fm4df8fQ"></div>-->
 
 						</div>
@@ -68,6 +68,7 @@ ob_start()
 							$login = filtruj($_POST['login']);
 							$haslo = filtruj($_POST['haslo']);
 							$ip = filtruj($_SERVER['REMOTE_ADDR']);
+							
 							//$response = $_POST['g-recaptcha-response'];
 
 							/*if (!isset($_POST['g-recaptcha-response'])) {
@@ -97,32 +98,40 @@ ob_start()
 							if (strlen($login) <= 20 && strlen($haslo) <= 20) {
 
 								/* Łączymy się z serwerem */
-								$mysqli = new mysqli('mysql530int.cp.az.pl', 'u6001900_szymon', 'mNa5YWLL', 'db6001900_RaportyWilgotnosci');
+								require_once ('polaczenie_z_baza.php');
 
 								/* Utworzenie zapytania */
-								$login = $mysqli -> real_escape_string($login);
-								$query = "SELECT Login,Haslo FROM Uzytkownicy WHERE Login = '" . $login . "'";
-								/*Przesłanie zapytania do bazy*/
-								$result = $mysqli -> query($query);
-
-								while ($row = $result -> fetch_object()) {
-									$_SESSION['login'] = $row -> Login;
-									$_SESSION['hashed_haslo'] = $row -> Haslo;
-								}
-
-								/* sprawdzamy czy login i hasło są dobre*/
-								$num_rows = mysqli_num_rows($result);
-								if ($num_rows > 0 && $_SESSION['login'] == $login && password_verify($haslo, $_SESSION['hashed_haslo'])) {
-									/*uaktualniamy date logowania oraz ip*/
-									$query = "UPDATE Uzytkownicy SET Data logowania= '" . time() . "', ip = '" . $ip . "' WHERE Login = '" . $login . "';";
-									/*Przesłanie zapytania do bazy*/
-									$result = $mysqli -> query($query);
-									$_SESSION['zalogowany'] = 1;
-									$_SESSION['login'] = $login;
-									// zalogowany
+								if (mysqli_connect_errno()) {
+									printf("<div class='alert alert-danger'><span class='glyphicon glyphicon-thumb-down'></span>&nbsp<strong>Uwaga!</strong>&nbspBrak połączenia z serwerem MySQL. Kod błędu: %s\n</div>.", mysqli_connect_error());
 								} else {
-									echo '<div class="alert alert-warning"><span class="glyphicon glyphicon-alert"></span>&nbsp<strong>Uwaga!</strong>&nbspWpisano złe dane!</div>';
+									if($stmt=$mysqli->prepare("SELECT Login,Haslo FROM Uzytkownicy WHERE Login=?"))
+									{
+										$stmt -> bind_param("s", $login);	
+										$stmt -> execute();
+										$stmt -> bind_result($Login,$Haslo);
+										$stmt -> store_result();
+										
+										if ($stmt->num_rows > 0) {
+											$stmt->data_seek(0);
+											if ($stmt -> fetch()) {
+												
+												if ($Login == $login && password_verify($haslo, $Haslo)) {
+													$_SESSION['zalogowany'] = TRUE;
+													$_SESSION['login'] = $Login;	
+											}
+												
+											} 
+											
+										} else {
+												echo '<div class="alert alert-warning"><span class="glyphicon glyphicon-alert"></span>&nbsp<strong>Uwaga!</strong>&nbsp Podałeś zły login lub hasło!</div>';
+											}	
+										
+									} else {
+											echo "<div class='alert alert-warning'><span class='glyphicon glyphicon-alert'></span>&nbsp<strong>Uwaga!</strong>&nbsp Nie można odczytać informacji z bazy danych!</div>";
+											}
+									
 								}
+														
 							} else {
 								echo "<div class='alert alert-warning'><span class='glyphicon glyphicon-alert'></span>&nbsp<strong>Uwaga!</strong>&nbsp Podałeś zbyt długi Login lub Hasło.</div>";
 							}
@@ -133,11 +142,11 @@ ob_start()
 
 					}
 
-					if ($_SESSION['zalogowany'] == true) {
+					if ($_SESSION['zalogowany'] == TRUE) {
 						header('Location: http://www.web-control.pl/NarzedziaProdukcyjne/index2.php?powitanie=1');
 						echo "Witaj <b>" . $_SESSION['login'] . "</b><br><br>";
 						echo '<a href="index2.php?raporty_suszenia=1">Rozpocznij pracę</a><br / ><br / >';
-						echo '<a href="?wyloguj=1">[Wyloguj]</a>';
+						echo '<a href="?wyloguj=1">Wyloguj</a>';
 						//header( 'refresh: 2; url=http://www.web-control.pl/RaportyWilgotnosci/index2.php' );
 					}
 					?>
