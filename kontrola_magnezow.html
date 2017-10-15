@@ -40,8 +40,8 @@
                             <div class="row">
                                  <div class="col-sm-4">
                                     <label>Wynik kontroli i czyszczenia</label><br>
-                                    <input type="radio" name="wynik" id="wynik" value="OK" checked>OK &nbsp
-                                    <input type="radio" name="wynik" id="wynik" value="NOK">NOK
+                                    <input type="radio" name="wynik"  value="OK" checked>OK &nbsp
+                                    <input type="radio" name="wynik"  value="NOK">NOK
                                 </div>
                             </div>
                             
@@ -99,7 +99,11 @@
 </div>
 <br><br>
 
-<div id="odczyt_karty_kontroli"></div>
+    <div class="table-responsive">
+        <table class="table table-hover" id="odczyt_karty_kontroli">
+               
+        </table>
+    </div>
 <br><br>
 
 <script>
@@ -112,7 +116,8 @@ function zapisz(e){
     var linia = document.getElementById('linia').value;
     var data = document.getElementById('data').value;
     var godzina = document.getElementById('godzina').value;
-    var wynik = document.getElementById('wynik').value;
+   // var wynik = document.getElementById('wynik').value;
+    var wynik = document.querySelector('input[name="wynik"]:checked').value;
     var uwagi = document.getElementById('uwagi').value;
 
     var osoba_kontrolujaca = document.getElementById('osoba_kontrolujaca');
@@ -142,24 +147,27 @@ function zapisz(e){
     var linia1 = linia_form.options[linia_form.selectedIndex].value;
 
     var data = document.getElementById('data').value;
-
-    document.getElementById('odczyt_karty_kontroli').innerHTML = linia1+data;
-  
     
     var xhr = new XMLHttpRequest();
     xhr.open('GET','kontrola_magnezow_odczyt.php?linia='+linia1+'&data='+data, true);
     xhr.onload = function(){
     	if (this.status==200) {
-    		var dane = JSON.parse(this.responeText);
+    		var dane = JSON.parse(this.responseText);
     		var tabela_wynikowa = "";
-    		
+           
+    		var linia = dane['0']['Linia'];
+            var data =dane['0']['Data'];
+            var naglowek_tabeli = '<thead><tr><th>Linia: '+linia+'</th><th>Data: '+data+'</th></tr><tr><th>Godzina</th><th>Wynik</th><th>Kontrolujący</th></tr></thead>';
+            tabela_wynikowa  += naglowek_tabeli;
+
     		for (var i in dane) {
-			  tabela_wynikowa +='<table>'+
-			  					'<tr><td>Godzina</td><td>'+dane[i].Godzina+'</td>'+'<td>'+dane[i].Wynik_Kontroli+'</td>'+'<td>'+dane[i].Osoba_Kontrolujaca+'</td></tr>'+
-			  					'</table>'
+			  tabela_wynikowa +='<tr><td>'+dane[i].Godzina+'</td>'+'<td>'+dane[i].Wynik+'</td>'+'<td>'+dane[i].OsobaKontrolujaca+'</td></tr>'
 			}
+
+
     		
-    		document.getElementById('odczyt_karty_kontroli').innerHTML = tabela_wynikow;
+    		document.getElementById('odczyt_karty_kontroli').innerHTML = tabela_wynikowa;
+          
     	}
        
     }
