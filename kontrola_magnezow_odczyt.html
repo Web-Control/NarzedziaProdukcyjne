@@ -1,0 +1,78 @@
+<h1>Raport kontroli separatora magnetycznego</h1>
+<ul class="nav nav-tabs">
+<li><a href="index2.php?kontrola_magnezow=1">Tworzenie</a></li>
+<li class="active"><a href="index2.php?kontrola_magnezow_odczyt=1">Odczyt</a></li>
+<li><a href="index2.php?kontrola_magnezow_weryfikacja=1">Weryfikacja</a></li>
+</ul>
+<br>
+
+<div id="formularz">
+    <div class="row" >
+        <div class="form-group">
+            <form action=""  id="karta_kontroli">
+                <fieldset>
+                        <legend>
+                                Odczytaj kartę kontroli separatora magnetycznego
+                        </legend>
+                        
+                            <div class="row">
+
+                                <div class="col-sm-4">
+                                    <label >Linia</label>
+                                    <select class="form-control" name="linia" id="linia" required>
+                                        <option value="Burak">Burak</option>
+                                        <option value="Marchew">Marchew</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-4">
+                                     <label >Data</label>
+                                    <input class="form-control" type="date" name="data" id="data" required/>    
+                                </div>
+
+                            </div>
+                    <hr>
+                    <span class="glyphicon glyphicon-save"></span>&nbsp;<input type="submit" value="Odczytaj" id="zapisz" name="zapisz"><br><br><br >
+                   
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<br><br>
+
+    <div  id="karta">
+
+    </div>
+   
+<br><br>
+
+<script>
+ document.getElementById('karta_kontroli').addEventListener('submit', odczytaj);
+ 
+ function odczytaj(e){
+	e.preventDefault();
+	
+	var linia_form = document.getElementById('linia');
+    var linia1 = linia_form.options[linia_form.selectedIndex].value;
+
+    var data = document.getElementById('data').value;
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET','kontrola_magnezow_odczyt2.php?linia='+linia1+'&data='+data, true);
+    xhr.onprogress = function(){
+        document.getElementById("karta").innerHTML ='<img src="grafika/loader.gif"'
+    }
+    xhr.onload = function(){
+    	if (this.status==200) {	
+            document.getElementById("karta").innerHTML = this.responseText;
+          
+    	}
+       
+    }
+
+    xhr.send();
+    
+}
+
+</script>

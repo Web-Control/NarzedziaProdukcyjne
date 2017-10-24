@@ -88,6 +88,10 @@ a {
 	font-family: Brie Light;
 }
 
+caption {
+  font-size:2rem;
+}
+
 .navbar-inverse .navbar-nav>li>a {
 	color:#bbb859;
 }

@@ -22,7 +22,7 @@ if (isset($_GET['wyloguj']) == 1) {
 					<?php
 					if ($_SESSION['zalogowany'] == 1) {
 						if ($_GET['raporty_suszenia']==1||$_GET['raporty_suszenia_odczyt']==1||$_GET['raporty_suszenia_pobierz']==1||$_GET['raporty_sterylizacja']==1||$_GET['raporty_sterylizacji_odczyt']==1||$_GET['raporty_sterylizacji_pobierz']==1||$_GET['statystyki_sterylizacji']==1 ||$_GET['statystyki_suszenia']==1
-						|| $_GET['kontrola_magnezow']==1 || $_GET['kontrola_magnezow_weryfikacja']==1) {
+						|| $_GET['kontrola_magnezow']==1 || $_GET['kontrola_magnezow_odczyt']==1 || $_GET['kontrola_magnezow_weryfikacja']==1) {
 						include('boczne_menu.php');
 						}
 						if ($_GET['rejestracja']==1|| $_GET['usuwanie_plikow']==1|| $_GET['dodawanie_asortymentu']==1 || $_GET['kopia_zapasowa']==1) {
@@ -43,6 +43,9 @@ if (isset($_GET['wyloguj']) == 1) {
 						}
 						if ($_GET['kontrola_magnezow']==1) {
 							include 'kontrola_magnezow.html';
+							}
+						if ($_GET['kontrola_magnezow_odczyt']==1) {
+							include 'kontrola_magnezow_odczyt.html';
 							}
 						if ($_GET['kontrola_magnezow_weryfikacja']==1) {
 							include 'kontrola_magnezow_weryfikacja.html';

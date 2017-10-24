@@ -18,26 +18,41 @@ if (1==1) {
          printf("<div class='alert alert-danger'><span class='glyphicon glyphicon-thumbs-down'></span>&nbsp;<strong>Uwaga!</strong>&nbspBrak połączenia z serwerem MySQL. Kod błędu: %s\n</div>.", mysqli_connect_error());
         } else {
 
-                IF ($stmt = $mysqli -> prepare ("INSERT INTO Karta_Kontroli_Separatora_Magnetycznego(Linia,Data,Godzina,Wynik,OsobaKontrolujaca) VALUES(?,?,?,?,?)"))
+                if ($stmt= $mysqli->prepare("SELECT Linia,Data,Godzina,Wynik,Uwagi,OsobaKontrolujaca,WynikWeryfikacji,OsobaWeryfikujaca FROM Karta_Kontroli_Separatora_Magnetycznego WHERE Linia=? AND Data=? AND Godzina=?"))
                 {
-                    $stmt->bind_param("sssss", $linia,$data,$godzina,$wynik,$osoba_kontrolujaca);
+                    $stmt->bind_param("sss", $linia,$data,$godzina);
                     $stmt->execute();
+                    $stmt->store_result();
+                    
+                         if ($stmt->num_rows > 0 )
+                         {  
+                            echo '<div class="alert alert-warning"><strong>Info!</strong>&nbsp Wpis o tej godzinie już istnieje!</div><br />';      
+                          }
+                            else{
+                
+                                    IF ($stmt = $mysqli -> prepare ("INSERT INTO Karta_Kontroli_Separatora_Magnetycznego(Linia,Data,Godzina,Wynik,OsobaKontrolujaca) VALUES(?,?,?,?,?)"))
+                                    {
+                                        $stmt->bind_param("sssss", $linia,$data,$godzina,$wynik,$osoba_kontrolujaca);
+                                        $stmt->execute();
 
-                    if ($stmt -> affected_rows == 0 || $stmt -> affected_rows < 0 ||$stmt->affected_rows==NULL) {
-                        echo "<div class='alert alert-warning'><strong>Ostrzeżenie!</strong>&nbsp Nie dokokano zapisu. Możliwy błąd zapytania.</div>";
-                    }else {
-                            if ($stmt -> affected_rows > 0) {
-                                echo '<div class="alert alert-success alert-dismissable fade in">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                <span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Zapisano dane. Poniżej znajduje się twój raport. </div><br / >';
+                                        if ($stmt -> affected_rows == 0 || $stmt -> affected_rows < 0 ||$stmt->affected_rows==NULL) {
+                                            echo "<div class='alert alert-warning'><strong>Ostrzeżenie!</strong>&nbsp Nie dokokano zapisu. Możliwy błąd zapytania.</div>";
+                                        }else {
+                                                if ($stmt -> affected_rows > 0) {
+                                                    echo '<div class="alert alert-success alert-dismissable fade in">
+                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                    <span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;<strong>Sukces!</strong>&nbsp Zapisano dane. Poniżej znajduje się twój raport. </div><br / >';
 
-                            }
+                                                }
 
-                         }
+                                            }
 
-                }else {
-                         echo '<div class="alert alert-danger"><strong>Info!</strong>&nbsp Błąd podczas zapisu do bazy danych.</div>';
-                    }
+                                    }else {
+                                            echo '<div class="alert alert-danger"><strong>Info!</strong>&nbsp Błąd podczas zapisu do bazy danych.</div>';
+                                        }
+                                 }
+
+                }
 				
 				if (isset($uwagi) && !$uwagi==null) {
 					

@@ -1,7 +1,7 @@
 <h1>Raport kontroli separatora magnetycznego</h1>
 <ul class="nav nav-tabs">
 <li><a href="index2.php?kontrola_magnezow=1">Tworzenie</a></li>
-<li><a href="">Odczyt</a></li>
+<li><a href="index2.php?kontrola_magnezow_odczyt=1">Odczyt</a></li>
 <li class="active"><a href="index2.php?kontrola_magnezow_weryfikacja=1">Weryfikacja</a></li>
 </ul>
 <br>
@@ -41,7 +41,7 @@
                             <hr>
                             <div class="row">
                                  <div class="col-sm-4">
-                                    <label>Wynik kontroli i czyszczenia</label><br>
+                                    <label>Wynik weryfikacji</label><br>
                                     <input type="radio" name="wynik" id="wynik" value="OK" checked>OK &nbsp
                                     <input type="radio" name="wynik" id="wynik" value="NOK">NOK
                                 </div>
@@ -98,6 +98,7 @@
     </div>
 </div>
 <br><br>
+<div id="info"></div>
 
 
 <script>
@@ -122,6 +123,7 @@ function weryfikuj(e){
     xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 
     xhr.onload = function(){
+        document.getElementById("info").innerHTML = this.responseText;
         console.log(this.responseText);
     }
 

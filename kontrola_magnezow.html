@@ -1,7 +1,7 @@
 <h1>Raport kontroli separatora magnetycznego</h1>
 <ul class="nav nav-tabs">
 <li class="active"><a href="index2.php?kontrola_magnezow=1">Tworzenie</a></li>
-<li><a href="">Odczyt</a></li>
+<li><a href="index2.php?kontrola_magnezow_odczyt=1">Odczyt</a></li>
 <li><a href="index2.php?kontrola_magnezow_weryfikacja=1">Weryfikacja</a></li>
 </ul>
 <br>
@@ -99,7 +99,8 @@
 </div>
 <br><br>
 
-    <div class="table-responsive">
+    <div  id="karta"></div>
+    <div class="table-responsive" >
         <table class="table table-hover" id="odczyt_karty_kontroli">
                
         </table>
@@ -131,6 +132,7 @@ function zapisz(e){
     xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 
     xhr.onload = function(){
+        document.getElementById("karta").innerHTML = this.responseText;
         console.log(this.responseText);
     }
 
@@ -147,9 +149,11 @@ function zapisz(e){
     var linia1 = linia_form.options[linia_form.selectedIndex].value;
 
     var data = document.getElementById('data').value;
+    var godzina = document.getElementById('godzina').value;
+
     
     var xhr = new XMLHttpRequest();
-    xhr.open('GET','kontrola_magnezow_odczyt.php?linia='+linia1+'&data='+data, true);
+    xhr.open('GET','kontrola_magnezow_odczyt.php?linia='+linia1+'&data='+data+'&godzina='+godzina, true);
     xhr.onload = function(){
     	if (this.status==200) {
     		var dane = JSON.parse(this.responseText);
@@ -157,13 +161,16 @@ function zapisz(e){
            
     		var linia = dane['0']['Linia'];
             var data =dane['0']['Data'];
-            var naglowek_tabeli = '<thead><tr><th>Linia: '+linia+'</th><th>Data: '+data+'</th></tr><tr><th>Godzina</th><th>Wynik</th><th>Kontrolujący</th></tr></thead>';
+            var wynik_weryfikacji=dane['0']['WynikWeryfikacji'];
+            var osoba_weryfikujaca = dane['0']['OsobaWeryfikujaca'];
+            var naglowek_tabeli = '<caption>Karta kontroli separatora magnetycznego</caption><thead><tr><th>Linia: '+linia+'</th><th>Data: '+data+'</th></tr><tr><th>Godzina</th><th>Wynik</th><th>Uwagi</th><th>Kontrolujący</th></tr></thead>';
             tabela_wynikowa  += naglowek_tabeli;
 
     		for (var i in dane) {
-			  tabela_wynikowa +='<tr><td>'+dane[i].Godzina+'</td>'+'<td>'+dane[i].Wynik+'</td>'+'<td>'+dane[i].OsobaKontrolujaca+'</td></tr>'
+			  tabela_wynikowa +='<tr><td>'+dane[i].Godzina+'</td>'+'<td>'+dane[i].Wynik+'</td>'+'<td>'+dane[i].Uwagi+'</td>'+'<td>'+dane[i].OsobaKontrolujaca+'</td></tr>'
 			}
 
+            tabela_wynikowa += '<tr><td><b>Weryfikacja karty: '+wynik_weryfikacji+'</b></td><td><b>Osoba weryfikująca: '+osoba_weryfikujaca+'</b></td></tr>'
 
     		
     		document.getElementById('odczyt_karty_kontroli').innerHTML = tabela_wynikowa;

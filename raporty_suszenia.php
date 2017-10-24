@@ -534,7 +534,7 @@ if (isset($_POST['ostatnie_parametry']))
           $Uzytkownicy=ListaUzytkownikow($Uzytkownicy);
 
 
-              if ( $_SESSION['login'] == 'Chomej Sz.')
+              if ( $_SESSION['login'] == 'Chomej Sz.' || $_SESSION['login'] == 'Yaroshinskyi A.' || $_SESSION['login'] == 'Bednarczyk W.')
                 {
                 	if (isset($_POST['osoba_odpowiedzialna'])) {
 						echo "<option value='" . $_POST['osoba_odpowiedzialna'] . "' >" . $_POST['osoba_odpowiedzialna'] . "</option>";
