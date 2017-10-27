@@ -1,4 +1,5 @@
 <?php
+
 function filtruj($zmienna) {
 	$data = trim($zmienna);
 	//usuwa spacje, tagi
@@ -11,8 +12,7 @@ function filtruj($zmienna) {
 
 if (isset($_POST['pdf']) || isset($_POST['wyslij']) ) {
 	
-    $karta = $_SESSION['karta_kontroli_magnezow'];
-    //var_dump($karta);
+	$karta = $_SESSION['karta_kontroli_magnezow'];
     $linia = $karta[0]['Linia'];
     $data = $karta[0]['Data'];
     $wynik_weryfikacji = $karta[0]['WynikWeryfikacji'];
@@ -66,11 +66,46 @@ if (isset($_POST['pdf']) || isset($_POST['wyslij'])) {
 	
 								
 								$pdf -> SetFont('arial_ce', 'B', 14);
-								$pdf -> SetXY(10, 90);
-								$pdf -> Cell(15, 5, "Data: ");
+								$pdf -> SetXY(10, 60);
+								$pdf -> Cell(15, 5, "Godzina: ");
 								
-								$pdf -> SetXY(40, 90);
-								$pdf -> Cell(15, 5, "Dostawca: ");
+								$pdf -> SetXY(50, 60);
+								$pdf -> Cell(15, 5, "Wynik: ");
+
+								$pdf -> SetXY(90, 60);
+								$pdf -> Cell(15, 5, "Uwagi: ");
+
+								$pdf -> SetXY(150, 60);
+								$pdf -> Cell(15, 5, "Kontroluj¹cy: ");
+
+								$pdf -> SetFont('arial_ce', '', 12);
+
+								for($i=0; $i < count($karta) ;$i++)
+								{	
+									$y = $pdf -> GetY();
+									$y1 = $y + 7;
+									$pdf -> SetXY(10, $y1);
+									$pdf -> Cell(15, 5, $karta[$i]['Godzina']);
+									$pdf -> SetXY(50, $y1);
+									$pdf -> Cell(15, 5, $karta[$i]['Wynik']);
+									$pdf -> SetXY(90, $y1);
+									$pdf -> Cell(15, 5, $karta[$i]['Uwagi']);
+									$pdf -> SetXY(150, $y1);
+									/*Zmieniamy kodowanie znakï¿½w z UTF-8 na Windows-1250 poniewaï¿½ klasa fpdf nie wspiera UTF-8
+									co powoduje ï¿½e tekst z bazy danych nie pokazuje polskich znakï¿½w */
+									$osoba = iconv('UTF-8', 'windows-1250',$karta[$i]['OsobaKontrolujaca']);
+									$pdf -> Cell(15, 5, $osoba);
+									
+								}
+
+								$y = $pdf -> GetY();
+								$y2=$y+12;
+								$pdf -> SetFont('arial_ce', 'B', 12);
+								$pdf -> SetXY(10, $y2);
+								$pdf -> Cell(15, 5, "Weryfikacja karty: $wynik_weryfikacji ");
+								$pdf -> SetXY(100, $y2);
+								$pdf -> Cell(15, 5, "Osoba Weryfikuj¹ca: $osoba_weryfikujaca ");
+
 								
 								
 
@@ -117,13 +152,13 @@ if (isset($_POST['pdf']) || isset($_POST['wyslij'])) {
 		$mail -> IsHTML(true);
 		# Email @ HTML
 
-		$mail -> Subject = 'Raport z podsumowania procesu suszenia';
+		$mail -> Subject = 'Karta kontroli separatora magnetycznego';
 		$mail -> Body = "Witam.<br / ><br / >
-						W zaÅ‚Ä…czniku znajduje siÄ™ raport z podsumowania procesu suszenia dla asortymentu: .<br / ><br / >
-						WiadomoÅ›Ä‡ wysÅ‚ana z aplikacji sieciowej - NarzÄ™dzia Produkcyjne Online Suszarnia Warzyw Jaworski<br / >
-						ProszÄ™ na niÄ… nie odpowiadaÄ‡.<br / ><br / >
+						W za³¹czniku znajduje siê karta kontroli separatora magnetycznego w lini: $linia z dnia: $data.<br / ><br / >
+						Wiadomoœæ wys³ana z aplikacji sieciowej - Narzêdzia Produkcyjne Online Suszarnia Warzyw Jaworski<br / >
+						Proszê na ni¹ nie odpowiadaæ.<br / ><br / >
 						Administrator: Szymon Chomej. Email: schomej@jaworski.com.pl";
-		$mail -> AltBody = 'Przepraszamy wyst?i? jaki?b?d tutaj powinna by?re? wiadomo?i';
+		$mail -> AltBody = 'Przepraszamy wyst¹pi³ jakiœ b³¹d tutaj powinna byæ wiadomoœæ';
 
 		$doc = $pdf -> Output('S');
 		$mail -> AddStringAttachment($doc, 'raport_podsumowanie_suszenia.pdf', 'base64', 'application/pdf');

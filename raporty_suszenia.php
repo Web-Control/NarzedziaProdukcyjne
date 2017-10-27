@@ -713,7 +713,7 @@ if (isset($_POST['ostatnie_parametry']))
 						-->
 						<div class="col-sm-4">
 						<label >Dostawca</label>
-						<input class="form-control" type="text" name="dostawca" maxlength="200" />
+						<input class="form-control" type="text" name="dostawca" maxlength="300" />
 						</div>
 
 						<div class="col-sm-4">

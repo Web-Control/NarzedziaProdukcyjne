@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once ('funkcje.php');
 /* Łączymy się z serwerem */
 require_once ('polaczenie_z_baza_pdo.php');
