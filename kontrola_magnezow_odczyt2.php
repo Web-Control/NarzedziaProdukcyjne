@@ -55,8 +55,18 @@ require_once ('polaczenie_z_baza_pdo.php');
                         echo"</table> <br><br>";
 
                         echo "<hr><form method='post' action='raportpdf_karta_kontroli_magnezow_pokaz.php' target='_blank'><input type='submit' value='Pobierz raport PDF' name='pdf'></form><br / >";
-
-                       // echo json_encode($wynik);
+                        
+                        echo "<form method='post' action='raportpdf_karta_kontroli_magnezow_pokaz.php' target='_blank'>
+                                <label>Email</label>
+                                        <div class='row'>
+                                            <div class='col-sm-4'>
+                                            <input class='form-control' type='email' name='email' maxlength='50' required/>
+                                            </div>
+                                        </div>
+                                        <br / >
+                                 <input type='submit' value='Wyślij raport PDF' name='wyslij'>
+                                </form><br><br>";
+                     
                     }else {
                             echo "<div class='alert alert-info'><strong>Ostrzeżenie!</strong>&nbsp Brak karty w podanym dniu.</div>";
                          }
