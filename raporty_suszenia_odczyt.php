@@ -465,28 +465,28 @@
 
 					//Wyciągmy info o ocenie suszu na I zmianie
 					if ($opcja_ostatni_raport){
-					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany1 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=? "))
+					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany1 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=? AND CHAR_LENGTH(OcenaTowaruZmiany1)>0 "))
 						{
 					$stmt -> bind_param("ss",$nr_suszarni,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ocena_suszu1);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							printf("<br /><br /> <b>Ocena suszu po I zmianie:</b>&nbsp %s", $Ocena_suszu1);
 							}
 						}
 					}else
 						{
 
-						if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany1 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=? "))
+						if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany1 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(OcenaTowaruZmiany1)>0"))
 						{
 					$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ocena_suszu1);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							printf("<br /><br /> <b>Ocena suszu po I zmianie:</b>&nbsp %s", $Ocena_suszu1);
 							}
 						}
@@ -494,86 +494,86 @@
 
 						//Wyciągmy info o ocenie suszu na II zmianie
 					if ($opcja_ostatni_raport){
-					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany2 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=? "))
+					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany2 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=? AND CHAR_LENGTH(OcenaTowaruZmiany2)>0 "))
 						{
 					$stmt -> bind_param("ss",$nr_suszarni,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ocena_suszu2);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ocena suszu po II zmianie:</b>&nbsp %s", $Ocena_suszu2);
+						if ($stmt -> fetch()|| 1==1){
+							printf("<br /> <b>Ocena suszu po II zmianie:</b>&nbsp %s", $Ocena_suszu2);
 							}
 						}
 					}else
 						{
 
-						if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany2 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=?"))
+						if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany2 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(OcenaTowaruZmiany2)>0"))
 						{
 					$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ocena_suszu2);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ocena suszu po II zmianie:</b>&nbsp %s", $Ocena_suszu2);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ocena suszu po II zmianie:</b>&nbsp %s", $Ocena_suszu2);
 							}
 						}
 						}
 
 						//Wyciągmy info o ocenie suszu na III zmianie
 					if ($opcja_ostatni_raport){
-					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany3 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany3 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=? AND CHAR_LENGTH(OcenaTowaruZmiany3)>0"))
 						{
 					$stmt -> bind_param("ss",$nr_suszarni,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ocena_suszu3);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ocena suszu po III zmianie:</b>&nbsp %s", $Ocena_suszu3);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ocena suszu po III zmianie:</b>&nbsp %s", $Ocena_suszu3);
 							}
 						}
 					}else
 						{
 
-						if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany3 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=?" ))
+						if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany3 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(OcenaTowaruZmiany3)>0" ))
 						{
 					$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ocena_suszu3);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ocena suszu po III zmianie:</b>&nbsp %s <br / >", $Ocena_suszu3);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ocena suszu po III zmianie:</b>&nbsp %s", $Ocena_suszu3);
 							}
 						}
 						}
 
 					//Wyciągmy wartość iloci suszu na I zmianie
 					if ($opcja_ostatni_raport){
-					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana1 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana1 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=? AND IloscSuszuZmiana1>0"))
 						{
 					$stmt -> bind_param("ss",$nr_suszarni,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ilosc_suszu1);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							printf("<br /><br /> <b>Ilość suszu na I zmianie:</b>&nbsp %s kg", $Ilosc_suszu1);
 							}
 						}
 					}else
 						{
 
-						if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana1 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=?"))
+						if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana1 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=? AND IloscSuszuZmiana1>0"))
 						{
 					$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ilosc_suszu1);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							printf("<br /><br /> <b>Ilość suszu na I zmianie:</b>&nbsp %s kg", $Ilosc_suszu1);
 							}
 						}
@@ -581,115 +581,144 @@
 
 					//Wyciągmy wartość iloci suszu na II zmianie
 					if ($opcja_ostatni_raport){
-					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana2 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana2 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=? AND IloscSuszuZmiana2>0"))
 						{
 					$stmt -> bind_param("ss",$nr_suszarni,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ilosc_suszu2);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ilość suszu na II zmianie:</b>&nbsp %s kg", $Ilosc_suszu2);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ilość suszu na II zmianie:</b>&nbsp %s kg", $Ilosc_suszu2);
 							}
 						}
 					}else
 						{
 
-						if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana2 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=?"))
+						if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana2 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=? AND IloscSuszuZmiana2>0"))
 						{
 					$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ilosc_suszu2);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ilość suszu na II zmianie:</b>&nbsp %s kg", $Ilosc_suszu2);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ilość suszu na II zmianie:</b>&nbsp %s kg", $Ilosc_suszu2);
 							}
 						}
 						}
 
 					//Wyciągmy wartość iloci suszu na III zmianie
 					if ($opcja_ostatni_raport){
-					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana3 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana3 FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=? AND IloscSuszuZmiana3>0"))
 						{
 					$stmt -> bind_param("ss", $nr_suszarni,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ilosc_suszu3);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ilość suszu na III zmianie:</b>&nbsp %s kg", $Ilosc_suszu3);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ilość suszu na III zmianie:</b>&nbsp %s kg", $Ilosc_suszu3);
 							}
 						}
 					}else
 						{
 
-						if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana3 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=?"))
+						if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana3 FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=? AND IloscSuszuZmiana3>0"))
 						{
 					$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ilosc_suszu3);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ilość suszu na III zmianie:</b>&nbsp %s kg <br / >", $Ilosc_suszu3);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ilość suszu na III zmianie:</b>&nbsp %s kg ", $Ilosc_suszu3);
 							}
 						}
 						}
 
-					//Wyciągmy wartość całkowitej iloci suszu
+					//Wyciągmy wartość całkowitej iloci suszu z danej suszarni
 					if ($opcja_ostatni_raport){
-					if ($stmt = $mysqli -> prepare("SELECT CalkowitaIloscSuszu FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=?"))
+						if ($stmt = $mysqli -> prepare("SELECT SUM(IloscSuszuZmiana1+IloscSuszuZmiana2+IloscSuszuZmiana3) FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') AND NrSuszarni=?) AND NrSuszarni=? "))
+							{
+						$stmt -> bind_param("ss",$nr_suszarni,$nr_suszarni);
+						$stmt -> execute();
+						$stmt -> bind_result($Ilosc_suszu);
+						$stmt -> store_result();
+						$stmt->data_seek(0);
+							if ($stmt -> fetch() || 1==1){
+								printf("<br /><br /> <b>Ilość suszu z suszarni nr %s:</b>&nbsp %s kg",$nr_suszarni, $Ilosc_suszu);
+								}
+							}
+						}else
+							{
+	
+							if ($stmt = $mysqli -> prepare("SELECT SUM(IloscSuszuZmiana1+IloscSuszuZmiana2+IloscSuszuZmiana3) FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=? "))
+							{
+						$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
+						$stmt -> execute();
+						$stmt -> bind_result($Ilosc_suszu);
+						$stmt -> store_result();
+						$stmt->data_seek(0);
+							if ($stmt -> fetch() || 1==1){
+								printf("<br /><br /> <b>Ilość suszu z suszarni nr %s:</b>&nbsp %s kg",$nr_suszarni, $Ilosc_suszu);
+								}
+							}
+							}
+
+					//Wyciągmy wartość całkowitej iloci suszu ze wszystkich suszarni
+					if ($opcja_ostatni_raport){
+					if ($stmt = $mysqli -> prepare("SELECT CalkowitaIloscSuszu FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND CalkowitaIloscSuszu>0 "))
 						{
-					$stmt -> bind_param("ss",$nr_suszarni,$nr_suszarni);
+					$stmt -> bind_param("s",$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Ilosc_suszu);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Całkowita ilość suszu:</b>&nbsp %s kg", $Ilosc_suszu);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Całkowita ilość suszu ze wszystkich suszarni:</b>&nbsp %s kg", $Ilosc_suszu);
 							}
 						}
 					}else
 						{
 
-						if ($stmt = $mysqli -> prepare("SELECT CalkowitaIloscSuszu FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=?"))
+						if ($stmt = $mysqli -> prepare("SELECT CalkowitaIloscSuszu FROM `" . $asortyment_suszu . "` WHERE Data=? AND CalkowitaIloscSuszu>0 "))
 						{
-					$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
+					$stmt -> bind_param("s",$data_raportu);
 					$stmt -> execute();
 					$stmt -> bind_result($Ilosc_suszu);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Całkowita ilość suszu:</b>&nbsp %s kg", $Ilosc_suszu);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Całkowita ilość suszu ze wszystkich suszarni:</b>&nbsp %s kg", $Ilosc_suszu);
 							}
 						}
 						}
 
 					//Wyciągmy informacje o dostawcy
 					if ($opcja_ostatni_raport){
-					if ($stmt = $mysqli -> prepare("SELECT Dostawca FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=?" ))
+					if ($stmt = $mysqli -> prepare("SELECT Dostawca FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=? AND CHAR_LENGTH(Dostawca)>0" ))
 						{
 					$stmt -> bind_param("ss",$nr_suszarni,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Dostawca);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Dostawca:</b>&nbsp %s <br / ><br / >", $Dostawca);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /><br /> <b>Dostawca:</b>&nbsp %s ", $Dostawca);
 							}
 						}
 					}else
 					{
-						if ($stmt = $mysqli -> prepare("SELECT Dostawca FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=?"))
+						if ($stmt = $mysqli -> prepare("SELECT Dostawca FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(Dostawca)>0"))
 						{
 					$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Dostawca);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Dostawca:</b>&nbsp %s <br / >", $Dostawca);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /><br /> <b>Dostawca:</b>&nbsp %s ", $Dostawca);
 							}
 						}
 
@@ -697,27 +726,27 @@
 
 						//Wyciągmy informacje o uwagach
 					if ($opcja_ostatni_raport){
-					if ($stmt = $mysqli -> prepare("SELECT Uwagi FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT Uwagi FROM `" . $asortyment_suszu . "` WHERE Data=(SELECT MAX(Data) FROM `" . $asortyment_suszu . "` WHERE Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')AND NrSuszarni=?) AND NrSuszarni=? AND CHAR_LENGTH(Uwagi)>0"))
 						{
 					$stmt -> bind_param("ss",$nr_suszarni,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Uwagi);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							printf("<br /> <b>Uwagi:</b>&nbsp %s <br / ><br / >", $Uwagi);
 							}
 						}
 					}else
 					{
-						if ($stmt = $mysqli -> prepare("SELECT Uwagi FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=?"))
+						if ($stmt = $mysqli -> prepare("SELECT Uwagi FROM `" . $asortyment_suszu . "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(Uwagi)>0"))
 						{
 					$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Uwagi);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							printf("<br /><br /> <b>Uwagi:</b>&nbsp %s <br / ><br / >", $Uwagi);
 							}
 						}
@@ -744,14 +773,14 @@
 					}else
 						{
 
-						if ($stmt = $mysqli -> prepare("SELECT Zdjecia,OpisZdjecia FROM `" . $asortyment_suszu. "` WHERE Data=? AND NrSuszarni=?"))
+						if ($stmt = $mysqli -> prepare("SELECT Zdjecia,OpisZdjecia FROM `" . $asortyment_suszu. "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(Zdjecia)>0"))
 						{
 					$stmt -> bind_param("ss",$data_raportu,$nr_suszarni);
 					$stmt -> execute();
 					$stmt -> bind_result($Zdjecie,$Opis_zdjecia);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							if (empty($Zdjecie)) {echo "<b>Zdjęcia:</b> Brak zdjęć.<br / ><br / >";}
 							else {
 							printf('<b>Zdjęcia:</b> <br / ><br / ><a href="grafika/zdjecia_raporty_suszenia/%s" data-lightbox="zdjecie z raportu" data-title="Zdjecie z raportu suszenia"><img id="zdjecie_raportu" src="grafika/zdjecia_raporty_suszenia/%s"> </a><br / ><br / >',$Zdjecie,$Zdjecie);
@@ -995,7 +1024,7 @@ if ($_POST['cala_produkcja'])
 				foreach ($Asortyment_wbazie as $key => $asortyment)
 				{
 
-				if ($stmt = $mysqli -> prepare("SELECT SUM(CalkowitaIloscSuszu) FROM `" .$asortyment. "` WHERE NrSuszarni=(SELECT MIN(NrSuszarni) FROM  `" .$asortyment. "`) OR NrSuszarni=5 AND Data LIKE '%" . $rok . "%' "))
+				if ($stmt = $mysqli -> prepare("SELECT SUM(CalkowitaIloscSuszu) FROM `" .$asortyment. "` WHERE Data LIKE '%" . $rok . "%' "))
 						{
 					$stmt -> execute();
 					$stmt -> bind_result($Suma_suszu);

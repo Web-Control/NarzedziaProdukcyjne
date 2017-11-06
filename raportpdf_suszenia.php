@@ -255,7 +255,7 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 
 		//Wyciï¿½gmy info o ilosc suszu na I zmianie
 		/* Utworzenie zapytania */
-		$query = "SELECT IloscSuszuZmiana1 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		$query = "SELECT IloscSuszuZmiana1 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' AND IloscSuszuZmiana1>0 ";
 		/*PrzesÅ‚anie zapytania do bazy*/
 		$result = $mysqli -> query($query);
 		/* Przetwarzanie wierszy wyniku zapytania */
@@ -274,7 +274,7 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 
 		//Wyciï¿½gmy info o ilosc suszu na II zmianie
 		/* Utworzenie zapytania */
-		$query = "SELECT IloscSuszuZmiana2 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		$query = "SELECT IloscSuszuZmiana2 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' AND IloscSuszuZmiana2>0";
 		/*PrzesÅ‚anie zapytania do bazy*/
 		$result = $mysqli -> query($query);
 		/* Przetwarzanie wierszy wyniku zapytania */
@@ -293,7 +293,7 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 
 		//Wyciï¿½gmy info o ilosc suszu na III zmianie
 		/* Utworzenie zapytania */
-		$query = "SELECT IloscSuszuZmiana3 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		$query = "SELECT IloscSuszuZmiana3 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' AND IloscSuszuZmiana3>0 ";
 		/*PrzesÅ‚anie zapytania do bazy*/
 		$result = $mysqli -> query($query);
 		/* Przetwarzanie wierszy wyniku zapytania */
@@ -310,10 +310,28 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 		$pdf -> SetXY(218, 130);
 		$pdf -> Cell(15, 5, "$Ilosc_suszu3 kg");
 
-
-		//Wyciï¿½gmy info o caï¿½kowitej ilosc suszu
+		//Wyciï¿½gmy info o caï¿½kowitej ilosc suszu z danej suszarni
 		/* Utworzenie zapytania */
-		$query = "SELECT CalkowitaIloscSuszu FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		$query = "SELECT SUM(IloscSuszuZmiana1+IloscSuszuZmiana2+IloscSuszuZmiana3) AS IloscSuszu FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		/*PrzesÅ‚anie zapytania do bazy*/
+		$result = $mysqli -> query($query);
+		/* Przetwarzanie wierszy wyniku zapytania */
+		$num_rows = mysqli_num_rows($result);
+		if ($num_rows > 0) {
+			$row = $result -> fetch_object();
+			$Ilosc_suszu = $row -> IloscSuszu;
+		}
+		$pdf -> SetFont('arial_ce', 'B', 10);
+		$pdf -> SetXY(240, 130);
+		$pdf -> Cell(15, 5, "Iloœæ suszu:");
+
+		$pdf -> SetFont('arial_ce', '', 10);
+		$pdf -> SetXY(262, 130);
+		$pdf -> Cell(15, 5, "$Ilosc_suszu kg");
+		
+		//Wyciï¿½gmy info o caï¿½kowitej ilosc suszu ze wszystkich suszarni
+		/* Utworzenie zapytania */
+		$query = "SELECT CalkowitaIloscSuszu FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND CalkowitaIloscSuszu>0 ";
 		/*PrzesÅ‚anie zapytania do bazy*/
 		$result = $mysqli -> query($query);
 		/* Przetwarzanie wierszy wyniku zapytania */
@@ -323,16 +341,16 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 			$Ilosc_suszu = $row -> CalkowitaIloscSuszu;
 		}
 		$pdf -> SetFont('arial_ce', 'B', 10);
-		$pdf -> SetXY(240, 130);
-		$pdf -> Cell(15, 5, "Iloœæ suszu:");
+		$pdf -> SetXY(200.5, 137);
+		$pdf -> Cell(15, 5, "Iloœæ suszu ze wszystkich suszarni:");
 
 		$pdf -> SetFont('arial_ce', '', 10);
-		$pdf -> SetXY(262, 130);
+		$pdf -> SetXY(262, 137);
 		$pdf -> Cell(15, 5, "$Ilosc_suszu kg");
 
 		//Wyciï¿½gmy info o ocenie suszu na I zmianie
 		/* Utworzenie zapytania */
-		$query = "SELECT OcenaTowaruZmiany1 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		$query = "SELECT OcenaTowaruZmiany1 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' AND CHAR_LENGTH(OcenaTowaruZmiany1)>0";
 		/*PrzesÅ‚anie zapytania do bazy*/
 		$result = $mysqli -> query($query);
 		/* Przetwarzanie wierszy wyniku zapytania */
@@ -351,7 +369,7 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 
 		//Wyciï¿½gmy info o ocenie suszu na II zmianie
 		/* Utworzenie zapytania */
-		$query = "SELECT OcenaTowaruZmiany2 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		$query = "SELECT OcenaTowaruZmiany2 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' AND CHAR_LENGTH(OcenaTowaruZmiany2)>0";
 		/*PrzesÅ‚anie zapytania do bazy*/
 		$result = $mysqli -> query($query);
 		/* Przetwarzanie wierszy wyniku zapytania */
@@ -370,7 +388,7 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 
 		//Wyciï¿½gmy info o ocenie suszu na III zmianie
 		/* Utworzenie zapytania */
-		$query = "SELECT OcenaTowaruZmiany3 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		$query = "SELECT OcenaTowaruZmiany3 FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' AND CHAR_LENGTH(OcenaTowaruZmiany3)>0";
 		/*PrzesÅ‚anie zapytania do bazy*/
 		$result = $mysqli -> query($query);
 		/* Przetwarzanie wierszy wyniku zapytania */
@@ -389,7 +407,7 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 
 		//Wyciï¿½gamy info o dostawcy
 		/* Utworzenie zapytania */
-		$query = "SELECT Dostawca FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		$query = "SELECT Dostawca FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' AND CHAR_LENGTH(Dostawca)>0";
 		/*PrzesÅ‚anie zapytania do bazy*/
 		$result = $mysqli -> query($query);
 		/* Przetwarzanie wierszy wyniku zapytania */
@@ -408,7 +426,7 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 
 		//Wyciï¿½gamy info o uwagach
 		/* Utworzenie zapytania */
-		$query = "SELECT Uwagi FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		$query = "SELECT Uwagi FROM `" . $asortyment_suszu . "` WHERE Data ='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' AND CHAR_LENGTH(Uwagi)>0";
 		/*PrzesÅ‚anie zapytania do bazy*/
 		$result = $mysqli -> query($query);
 		/* Przetwarzanie wierszy wyniku zapytania */
@@ -427,7 +445,7 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 
 		//Wyciï¿½gamy zdjï¿½cie
 		/* Utworzenie zapytania */
-		$query = "SELECT Zdjecia,OpisZdjecia FROM `" . $asortyment_suszu . "` WHERE Data='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' ";
+		$query = "SELECT Zdjecia,OpisZdjecia FROM `" . $asortyment_suszu . "` WHERE Data='" . $data_raportu . "' AND NrSuszarni='" . $nr_suszarni . "' AND CHAR_LENGTH(Zdjecia)>0";
 		/*PrzesÅ‚anie zapytania do bazy*/
 		$result = $mysqli -> query($query);
 		/* Przetwarzanie wierszy wyniku zapytania */
@@ -444,7 +462,7 @@ if (isset($_POST['pdf']) || isset($_POST['pdf2']) || isset($_POST['wyslij'])) {
 				$pdf -> SetFont('arial_ce', 'B', 10);
 				//$pdf->SetTextColor(0, 0, 0);
 				$pdf -> SetXY(10, 30);
-				$pdf -> Cell(15, 5, "Zdjï¿½cia: ");
+				$pdf -> Cell(15, 5, "Zdjêcia: ");
 
 				$pdf -> Image("grafika/zdjecia_raporty_suszenia/$Zdjecie", 10, 40, 90, 60);
 
