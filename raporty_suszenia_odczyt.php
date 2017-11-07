@@ -995,7 +995,7 @@ if ($_POST['cala_produkcja'])
 				foreach ($Asortyment_wbazie as $key => $asortyment)
 				{
 
-				if ($stmt = $mysqli -> prepare("SELECT SUM(CalkowitaIloscSuszu) FROM `" .$asortyment. "` WHERE NrSuszarni=(SELECT MIN(NrSuszarni) FROM  `" .$asortyment. "`) OR NrSuszarni=5 AND Data LIKE '%" . $rok . "%' "))
+				if ($stmt = $mysqli -> prepare("SELECT SUM(CalkowitaIloscSuszu) FROM `" .$asortyment. "` WHERE Data LIKE '%" . $rok . "%' "))
 						{
 					$stmt -> execute();
 					$stmt -> bind_result($Suma_suszu);
