@@ -705,12 +705,12 @@ if (isset($_POST['ostatnie_parametry']))
 
 
 					<div class="row">
-						<!--
+						
 						<div class="col-sm-4">
 						<label >Całkowita ilość Suszu</label>
 						<input class="form-control" type="number" name="ilosc_suszu"  maxlength="5" />
 						</div>
-						-->
+						
 						<div class="col-sm-4">
 						<label >Dostawca</label>
 						<input class="form-control" type="text" name="dostawca" maxlength="300" />
@@ -1180,7 +1180,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 
 					//Wyciągmy info o ocenie suszu na 1 zmianie
-					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany1 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany1 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(OcenaTowaruZmiany1)>0 "))
 						{
 					/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 					$stmt -> bind_param("ss",$data_do_odczytu,$nr_suszarni);
@@ -1189,13 +1189,13 @@ if (isset($_POST['ostatnie_parametry']))
 					$stmt -> bind_result($Ocena_suszu1);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							printf("<br /><br /> <b>Ocena suszu po I zmianie:</b>&nbsp %s", $Ocena_suszu1);
 							}
 						}
 
 					//Wyciągmy info o ocenie suszu na 2 zmianie
-					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany2 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany2 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(OcenaTowaruZmiany2)>0"))
 						{
 					/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 					$stmt -> bind_param("ss",$data_do_odczytu,$nr_suszarni);
@@ -1204,13 +1204,13 @@ if (isset($_POST['ostatnie_parametry']))
 					$stmt -> bind_result($Ocena_suszu2);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ocena suszu po II zmianie:</b>&nbsp %s", $Ocena_suszu2);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ocena suszu po II zmianie:</b>&nbsp %s", $Ocena_suszu2);
 							}
 						}
 
 						//Wyciągmy info o ocenie suszu na 3 zmianie
-					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany3 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT OcenaTowaruZmiany3 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(OcenaTowaruZmiany3)>0"))
 						{
 					/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 					$stmt -> bind_param("ss",$data_do_odczytu,$nr_suszarni);
@@ -1219,13 +1219,13 @@ if (isset($_POST['ostatnie_parametry']))
 					$stmt -> bind_result($Ocena_suszu3);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ocena suszu po III zmianie:</b>&nbsp %s", $Ocena_suszu3);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ocena suszu po III zmianie:</b>&nbsp %s", $Ocena_suszu3);
 							}
 						}
 
 					//Wyciągmy wartość iloci suszu na 1 zmianie
-					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana1 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=? "))
+					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana1 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=? AND IloscSuszuZmiana1>0 "))
 						{
 					/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 					$stmt -> bind_param("ss",$data_do_odczytu,$nr_suszarni);
@@ -1234,13 +1234,13 @@ if (isset($_POST['ostatnie_parametry']))
 					$stmt -> bind_result($Ilosc_suszu1);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							printf("<br /><br /> <b>Ilość suszu na I zmianie:</b>&nbsp %s kg", $Ilosc_suszu1);
 							}
 						}
 
 					//Wyciągmy wartość iloci suszu na 2 zmianie
-					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana2 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana2 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=?  AND IloscSuszuZmiana2>0 "))
 						{
 					/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 					$stmt -> bind_param("ss",$data_do_odczytu,$nr_suszarni);
@@ -1249,13 +1249,13 @@ if (isset($_POST['ostatnie_parametry']))
 					$stmt -> bind_result($Ilosc_suszu2);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ilość suszu na II zmianie:</b>&nbsp %s kg", $Ilosc_suszu2);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ilość suszu na II zmianie:</b>&nbsp %s kg", $Ilosc_suszu2);
 							}
 						}
 
 					//Wyciągmy wartość iloci suszu na 3 zmianie
-					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana3 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT IloscSuszuZmiana3 FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=?  AND IloscSuszuZmiana3>0"))
 						{
 					/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 					$stmt -> bind_param("ss",$data_do_odczytu,$nr_suszarni);
@@ -1264,28 +1264,43 @@ if (isset($_POST['ostatnie_parametry']))
 					$stmt -> bind_result($Ilosc_suszu3);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Ilość suszu na III zmianie:</b>&nbsp %s kg", $Ilosc_suszu3);
+						if ($stmt -> fetch() || 1==1){
+							printf("<br /> <b>Ilość suszu na III zmianie:</b>&nbsp %s kg", $Ilosc_suszu3);
 							}
 						}
 
-					//Wyciągmy wartość całkwitej iloci suszu
-					if ($stmt = $mysqli -> prepare("SELECT CalkowitaIloscSuszu FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=?"))
+					//Wyciągmy wartość całkwitej iloci suszu z danej szafy
+					if ($stmt = $mysqli -> prepare("SELECT SUM(IloscSuszuZmiana1+IloscSuszuZmiana2+IloscSuszuZmiana3) FROM `" . $asortyment . "` WHERE Data=?  "))
+					{
+				/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
+				$stmt -> bind_param("s",$data_do_odczytu);
+
+				$stmt -> execute();
+				$stmt -> bind_result($Ilosc_suszu);
+				$stmt -> store_result();
+				$stmt->data_seek(0);
+					if ($stmt -> fetch() || 1==1) {
+						printf("<br /><br /> <b>Ilość suszu z suszarni nr %s:</b>&nbsp %s kg",$nr_suszarni, $Ilosc_suszu);
+						}
+					}
+
+					//Wyciągmy wartość całkwitej iloci suszu ze wszystkich szaf
+					if ($stmt = $mysqli -> prepare("SELECT CalkowitaIloscSuszu FROM `" . $asortyment . "` WHERE Data=? AND CalkowitaIloscSuszu>0 "))
 						{
 					/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
-					$stmt -> bind_param("ss",$data_do_odczytu,$nr_suszarni);
+					$stmt -> bind_param("s",$data_do_odczytu);
 
 					$stmt -> execute();
 					$stmt -> bind_result($Ilosc_suszu);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
-							printf("<br /><br /> <b>Całkowita ilość suszu:</b>&nbsp %s kg", $Ilosc_suszu);
+						if ($stmt -> fetch() || 1==1) {
+							printf("<br /> <b>Całkowita ilość suszu ze wszystkich suszarni:</b>&nbsp %s kg", $Ilosc_suszu);
 							}
 						}
 
 						//Wyciągmy info o dostawcy
-					if ($stmt = $mysqli -> prepare("SELECT Dostawca FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT Dostawca FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(Dostawca)>0"))
 						{
 					/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 					$stmt -> bind_param("ss",$data_do_odczytu,$nr_suszarni);
@@ -1294,13 +1309,13 @@ if (isset($_POST['ostatnie_parametry']))
 					$stmt -> bind_result($Dostawca);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							printf("<br /><br /> <b>Dostawca:</b>&nbsp %s ", $Dostawca);
 							}
 						}
 
 						//Wyciągmy informacje o uwagach
-					if ($stmt = $mysqli -> prepare("SELECT Uwagi FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=?"))
+					if ($stmt = $mysqli -> prepare("SELECT Uwagi FROM `" . $asortyment . "` WHERE Data=? AND NrSuszarni=? AND CHAR_LENGTH(Uwagi)>0"))
 						{
 					/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 					$stmt -> bind_param("ss",$data_do_odczytu,$nr_suszarni);
@@ -1309,7 +1324,7 @@ if (isset($_POST['ostatnie_parametry']))
 					$stmt -> bind_result($Uwagi);
 					$stmt -> store_result();
 					$stmt->data_seek(0);
-						if ($stmt -> fetch()){
+						if ($stmt -> fetch() || 1==1){
 							printf("<br /><br /> <b>Uwagi:</b>&nbsp %s <br / ><br / >", $Uwagi);
 							}
 						}
@@ -1354,8 +1369,8 @@ if (isset($_POST['ostatnie_parametry']))
 				$susz_zmiana2=filtruj($_POST['susz_zmiana2']);
 				$susz_zmiana3=filtruj($_POST['susz_zmiana3']);
 
-				//$ilosc_suszu=filtruj($_POST['ilosc_suszu']);
-				$ilosc_suszu=$susz_zmiana1+$susz_zmiana2+$susz_zmiana3;
+				$ilosc_suszu=filtruj($_POST['ilosc_suszu']);
+				//$ilosc_suszu=$susz_zmiana1+$susz_zmiana2+$susz_zmiana3;
 				$dostawca = filtruj($_POST['dostawca']);
 				$uwagi = filtruj($_POST['uwagi']);
 
@@ -1427,7 +1442,7 @@ if (isset($_POST['ostatnie_parametry']))
 									switch ($nr_suszarni) {
 										case '1 i 2':
 												//Tworzymy zapytanie
-												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=1 LIMIT 1"))
+												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=1 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 												 {
 												/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 												$stmt -> bind_param("ss",$uwagi,$data);
@@ -1436,7 +1451,7 @@ if (isset($_POST['ostatnie_parametry']))
 												 }
 
 												 //Tworzymy zapytanie
-												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 												 {
 												/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 												$stmt -> bind_param("ss",$uwagi,$data);
@@ -1452,7 +1467,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 										case '3 i 4':
 												//Tworzymy zapytanie
-												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 												 {
 												/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 												$stmt -> bind_param("ss",$uwagi,$data);
@@ -1461,7 +1476,7 @@ if (isset($_POST['ostatnie_parametry']))
 												 }
 
 												 //Tworzymy zapytanie
-												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 												 {
 												/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 												$stmt -> bind_param("ss",$uwagi,$data);
@@ -1477,7 +1492,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 										case '2 i 3 i 4':
 												//Tworzymy zapytanie
-												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 												 {
 												/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 												$stmt -> bind_param("ss",$uwagi,$data);
@@ -1486,7 +1501,7 @@ if (isset($_POST['ostatnie_parametry']))
 												 }
 
 												 //Tworzymy zapytanie
-												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 												 {
 												/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 												$stmt -> bind_param("ss",$uwagi,$data);
@@ -1495,7 +1510,7 @@ if (isset($_POST['ostatnie_parametry']))
 												 }
 
 												 //Tworzymy zapytanie
-												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 												 {
 												/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 												$stmt -> bind_param("ss",$uwagi,$data);
@@ -1511,7 +1526,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 										default:
 												//Tworzymy zapytanie
-												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=? LIMIT 1"))
+												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Uwagi=? WHERE Data=? AND NrSuszarni=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 												 {
 												/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 												$stmt -> bind_param("sss",$uwagi,$data,$nr_suszarni);
@@ -1531,7 +1546,7 @@ if (isset($_POST['ostatnie_parametry']))
 								 {
 
 							//Zmieniamy istniejące dane
-							if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Zdjecia=?,OpisZdjecia=? WHERE Data=? AND NrSuszarni=?  LIMIT 1"))
+							if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Zdjecia=?,OpisZdjecia=? WHERE Data=? AND NrSuszarni=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s')  LIMIT 1"))
 							 {
 
 							/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
@@ -1561,7 +1576,7 @@ if (isset($_POST['ostatnie_parametry']))
 								 {
 
 							//Zmieniamy istniejące dane
-							if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Zdjecia=? WHERE Data=? AND NrSuszarni=? LIMIT 1"))
+							if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Zdjecia=? WHERE Data=? AND NrSuszarni=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 							 {
 
 							/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
@@ -1588,109 +1603,18 @@ if (isset($_POST['ostatnie_parametry']))
 							//Opcja 4 jeśli podano ilość suszu
 							if (!$ilosc_suszu == null)
 							{
-								$zapytanie1="";
-									 $zapytanie2="";
-									 $zapytanie3="";
-								//Tworzymy zapytanie
-
-								switch ($nr_suszarni) {
-									case '1 i 2':
-
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET CalkowitaIloscSuszu=? WHERE Data=? AND NrSuszarni=1 LIMIT 1"))
-									 {
-									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
-									$stmt -> bind_param("ss",$ilosc_suszu,$data);
-									$stmt -> execute();
-									$zapytanie1=TRUE;
-									 }
-
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET CalkowitaIloscSuszu=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
-									 {
-									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
-									$stmt -> bind_param("ss",$ilosc_suszu,$data);
-									$stmt -> execute();
-									$zapytanie2=TRUE;
-									 }
-
-									 if ($zapytanie1 && $zapytanie2) {
-										 $opcja4=TRUE;
-									 }
-
-
-										 break;
-
-									case '3 i 4':
-
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET CalkowitaIloscSuszu=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
-									 {
-									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
-									$stmt -> bind_param("ss",$ilosc_suszu,$data);
-									$stmt -> execute();
-									$zapytanie1=TRUE;
-									 }
-
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET CalkowitaIloscSuszu=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
-									 {
-									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
-									$stmt -> bind_param("ss",$ilosc_suszu,$data);
-									$stmt -> execute();
-									$zapytanie2=TRUE;
-									 }
-
-									 if ($zapytanie1 && $zapytanie2) {
-										 $opcja4=TRUE;
-									 }
-
-
-										 break;
-
-									case '2 i 3 i 4':
-
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET CalkowitaIloscSuszu=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
-									 {
-									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
-									$stmt -> bind_param("ss",$ilosc_suszu,$data);
-									$stmt -> execute();
-									$zapytanie1=TRUE;
-									 }
-
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET CalkowitaIloscSuszu=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
-									 {
-									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
-									$stmt -> bind_param("ss",$ilosc_suszu,$data);
-									$stmt -> execute();
-									$zapytanie2=TRUE;
-									 }
-
-									  if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET CalkowitaIloscSuszu=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
-									 {
-									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
-									$stmt -> bind_param("ss",$ilosc_suszu,$data);
-									$stmt -> execute();
-									$zapytanie3=TRUE;
-									 }
-
-									 if ($zapytanie1 && $zapytanie2 && $zapytanie3) {
-										 $opcja4=TRUE;
-									 }
-
-
-										 break;
-
-									default:
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET CalkowitaIloscSuszu=? WHERE Data=? AND NrSuszarni=? LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET CalkowitaIloscSuszu=? WHERE Data=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
-										$stmt -> bind_param("sss",$ilosc_suszu,$data,$nr_suszarni );
+										$stmt -> bind_param("ss",$ilosc_suszu,$data);
 										$stmt -> execute();
-										$opcja4=TRUE;
+											if ($stmt->affected_rows > 0) {
+											$opcja4=TRUE;
+											}
 										 }
-
-										break;
 								}
 
-							}
 
 							//Opcja 5 jeśli podano ilość suszu 1 zmiana
 							if (!$susz_zmiana1 == null)
@@ -1703,7 +1627,7 @@ if (isset($_POST['ostatnie_parametry']))
 								  {
 									 case '1 i 2':
 
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=1 LIMIT 1"))
+									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=1 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana1,$data);
@@ -1711,7 +1635,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie1=TRUE;
 									 }
 
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana1,$data);
@@ -1728,7 +1652,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									case '3 i 4':
 
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana1,$data);
@@ -1736,7 +1660,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie1=TRUE;
 									 }
 
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana1,$data);
@@ -1753,7 +1677,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									case '2 i 3 i 4':
 
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana1,$data);
@@ -1761,7 +1685,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie1=TRUE;
 									 }
 
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana1,$data);
@@ -1769,7 +1693,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie2=TRUE;
 									 }
 
-									  if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+									  if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana1,$data);
@@ -1785,7 +1709,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 break;
 
 									 default:
-										 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=? LIMIT 1"))
+										 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana1=? WHERE Data=? AND NrSuszarni=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("sss",$susz_zmiana1,$data,$nr_suszarni);
@@ -1809,7 +1733,7 @@ if (isset($_POST['ostatnie_parametry']))
 								switch ($nr_suszarni) {
 									case '1 i 2':
 
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=1 LIMIT 1"))
+									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=1 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana2,$data);
@@ -1817,7 +1741,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie1=TRUE;
 									 }
 
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana2,$data);
@@ -1834,7 +1758,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									case '3 i 4':
 
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana2,$data);
@@ -1842,7 +1766,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie1=TRUE;
 									 }
 
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana2,$data);
@@ -1859,7 +1783,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									case '2 i 3 i 4':
 
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana2,$data);
@@ -1867,7 +1791,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie1=TRUE;
 									 }
 
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana2,$data);
@@ -1875,7 +1799,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie2=TRUE;
 									 }
 
-									  if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+									  if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana2,$data);
@@ -1891,7 +1815,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 break;
 
 									default:
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=? LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana2=? WHERE Data=? AND NrSuszarni=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("sss",$susz_zmiana2,$data,$nr_suszarni );
@@ -1915,7 +1839,7 @@ if (isset($_POST['ostatnie_parametry']))
 								switch ($nr_suszarni) {
 									case '1 i 2':
 
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=1 LIMIT 1"))
+									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=1 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana3,$data);
@@ -1923,7 +1847,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie1=TRUE;
 									 }
 
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana3,$data);
@@ -1940,7 +1864,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									case '3 i 4':
 
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana3,$data);
@@ -1948,7 +1872,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie1=TRUE;
 									 }
 
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana3,$data);
@@ -1965,7 +1889,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									case '2 i 3 i 4':
 
-									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+									 	if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana3,$data);
@@ -1973,7 +1897,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie1=TRUE;
 									 }
 
-									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+									 if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana3,$data);
@@ -1981,7 +1905,7 @@ if (isset($_POST['ostatnie_parametry']))
 									$zapytanie2=TRUE;
 									 }
 
-									  if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+									  if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 									 {
 									/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 									$stmt -> bind_param("ss",$susz_zmiana3,$data);
@@ -1997,7 +1921,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 break;
 
 									default:
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=? LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET IloscSuszuZmiana3=? WHERE Data=? AND NrSuszarni=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("sss",$susz_zmiana3,$data,$nr_suszarni );
@@ -2019,7 +1943,7 @@ if (isset($_POST['ostatnie_parametry']))
 								switch ($nr_suszarni) {
 									case '1 i 2':
 												//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=1 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=1 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany1,$data );
@@ -2028,7 +1952,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany1,$data );
@@ -2044,7 +1968,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 										case '3 i 4':
 												//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany1,$data );
@@ -2053,7 +1977,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany1,$data );
@@ -2069,7 +1993,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									case '2 i 3 i 4':
 												//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany1,$data );
@@ -2078,7 +2002,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany1,$data );
@@ -2087,7 +2011,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany1,$data );
@@ -2103,7 +2027,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									default:
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=? LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany1=? WHERE Data=? AND NrSuszarni=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("sss",$ocena_zmiany1,$data,$nr_suszarni );
@@ -2126,7 +2050,7 @@ if (isset($_POST['ostatnie_parametry']))
 								switch ($nr_suszarni) {
 									case '1 i 2':
 												//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=1 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=1 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany2,$data );
@@ -2135,7 +2059,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany2,$data );
@@ -2151,7 +2075,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 										case '3 i 4':
 												//Tworzymy zapytanie
-												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 												 {
 												/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 												$stmt -> bind_param("ss",$ocena_zmiany2,$data );
@@ -2160,7 +2084,7 @@ if (isset($_POST['ostatnie_parametry']))
 												 }
 
 												 //Tworzymy zapytanie
-												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+												if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 												 {
 												/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 												$stmt -> bind_param("ss",$ocena_zmiany2,$data );
@@ -2176,7 +2100,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									case '2 i 3 i 4':
 												//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany2,$data );
@@ -2185,7 +2109,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany2,$data );
@@ -2194,7 +2118,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany2,$data );
@@ -2210,7 +2134,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									default:
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=? LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany2=? WHERE Data=? AND NrSuszarni=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("sss",$ocena_zmiany2,$data,$nr_suszarni );
@@ -2234,7 +2158,7 @@ if (isset($_POST['ostatnie_parametry']))
 								switch ($nr_suszarni) {
 									case '1 i 2':
 												//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=1 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=1 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany3,$data );
@@ -2243,7 +2167,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany3,$data );
@@ -2259,7 +2183,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 										case '3 i 4':
 												//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany3,$data );
@@ -2268,7 +2192,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany3,$data );
@@ -2284,7 +2208,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									case '2 i 3 i 4':
 												//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany3,$data );
@@ -2293,7 +2217,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany3,$data );
@@ -2302,7 +2226,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$ocena_zmiany3,$data );
@@ -2319,7 +2243,7 @@ if (isset($_POST['ostatnie_parametry']))
 									default:
 
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=? LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET OcenaTowaruZmiany3=? WHERE Data=? AND NrSuszarni=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("sss",$ocena_zmiany3,$data,$nr_suszarni);
@@ -2343,7 +2267,7 @@ if (isset($_POST['ostatnie_parametry']))
 								switch ($nr_suszarni) {
 									case '1 i 2':
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=1 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=1 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$dostawca,$data);
@@ -2352,7 +2276,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$dostawca,$data);
@@ -2368,7 +2292,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 										case '3 i 4':
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$dostawca,$data);
@@ -2377,7 +2301,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$dostawca,$data);
@@ -2393,7 +2317,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 										case '2 i 3 i 4':
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=2 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=2 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$dostawca,$data);
@@ -2402,7 +2326,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										 //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=3 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=3 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$dostawca,$data);
@@ -2411,7 +2335,7 @@ if (isset($_POST['ostatnie_parametry']))
 										 }
 
 										  //Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=4 LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=4 AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("ss",$dostawca,$data);
@@ -2427,7 +2351,7 @@ if (isset($_POST['ostatnie_parametry']))
 
 									default:
 										//Tworzymy zapytanie
-										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=? LIMIT 1"))
+										if ($stmt = $mysqli -> prepare("UPDATE `".$asortyment."` SET Dostawca=? WHERE Data=? AND NrSuszarni=? AND Czas >=  STR_TO_DATE('08:00:00','%h:%i:%s') LIMIT 1"))
 										 {
 										/*Przypisujemy zmienne do znaczników ? w zapytaniu sql*/
 										$stmt -> bind_param("sss",$dostawca,$data,$nr_suszarni);
