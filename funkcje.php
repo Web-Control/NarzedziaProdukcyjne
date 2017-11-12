@@ -93,6 +93,40 @@ function IsoToUtf8($str)
 				
 		}
 
+//Robimy liste lini. Zapytanie do bazy o obecny linie
+	function ListaLini($tablica)
+	{
+	GLOBAL $mysqli;//Ze względu na Variable Scope
+		if (mysqli_connect_errno()) {
+
+			printf("<div class='alert alert-danger'><span class='glyphicon glyphicon-thumbs-down'></span>&nbsp;<strong>Uwaga!</strong>&nbspBrak połączenia z serwerem MySQL. Kod błędu: %s\n</div>", mysqli_connect_error());
+
+			} else
+			{
+			if ($stmt = $mysqli -> prepare("SELECT NazwaLini FROM Linie "))
+				{
+					$stmt -> execute();
+					$stmt -> bind_result($Linia);
+					$stmt -> store_result();
+		
+					if ($stmt->num_rows > 0)
+						{
+							/* Wyciągamy dane z zapytania sql i zapisujemy do tablicy  */
+				    		while ($stmt->fetch())
+							 {
+								static $i=0;
+								$tablica[$i]=$Linia;
+								$i++;
+				    		}
+			    		}
+		
+						return $tablica;
+				}
+			}
+
+	}
+
+
 
 //Funkcja znajduje ciąg znaków w innym ciągu znaków i zaznacza go kolorem
 function nadaj_kolor_w_tresci($tresc,$znaki,$kolor)

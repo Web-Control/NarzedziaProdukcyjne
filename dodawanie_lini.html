@@ -1,0 +1,54 @@
+<h2>Dodawanie nowej lini</h2>
+
+<div id="formularz">
+		<div class="row" >
+			<div class="form-group">
+<form  action="" id="formularz_lini">
+	<fieldset>
+					<legend>Dodaj nową linię</legend>
+		<div class="row">
+					<div class="col-sm-4">
+						<label>Nazwa lini:</label><br / >
+						<input class="form-control"  type="text" name="nazwa_lini" id="nazwa_lini" max="80" required>
+					</div>
+		</div>
+		<br / >
+		<span class="glyphicon glyphicon-plus-sign"></span>&nbsp<input type="submit" value="Dodaj" name="dodaj">
+	</fieldset>
+</form>
+</div>
+</div>
+</div>
+
+<br / >
+<br / >
+
+<div id="odpowiedz"></div>
+
+<script>
+ document.getElementById('formularz_lini').addEventListener('submit', odczytaj);
+ 
+ function odczytaj(e){
+	e.preventDefault();
+	
+	var nazwa_lini = document.getElementById('nazwa_lini').value;
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET','dodawanie_lini.php?nazwa_lini='+nazwa_lini, true);
+    xhr.onprogress = function(){
+        document.getElementById("odpowiedz").innerHTML ='<img src="grafika/loader.gif"'
+    }
+    xhr.onload = function(){
+    	if (this.status==200) {	
+            document.getElementById("odpowiedz").innerHTML = this.responseText;
+          
+    	}
+       
+    }
+
+    xhr.send();
+    
+}
+
+</script>
+

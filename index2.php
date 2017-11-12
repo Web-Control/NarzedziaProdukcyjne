@@ -25,7 +25,7 @@ if (isset($_GET['wyloguj']) == 1) {
 						|| $_GET['kontrola_magnezow']==1 || $_GET['kontrola_magnezow_odczyt']==1 || $_GET['kontrola_magnezow_weryfikacja']==1) {
 						include('boczne_menu.php');
 						}
-						if ($_GET['rejestracja']==1|| $_GET['usuwanie_plikow']==1|| $_GET['dodawanie_asortymentu']==1 || $_GET['kopia_zapasowa']==1) {
+						if ($_GET['rejestracja']==1|| $_GET['usuwanie_plikow']==1|| $_GET['dodawanie_asortymentu']==1 || $_GET['dodawanie_lini']==1 || $_GET['kopia_zapasowa']==1) {
 						include('boczne_menu2.php');
 						}
 					}
@@ -84,6 +84,10 @@ if (isset($_GET['wyloguj']) == 1) {
 						if ($_GET['dodawanie_asortymentu']==1) {
 						include 'dodawanie_asortymentu.php';
 						}
+						if ($_GET['dodawanie_lini']==1) {
+						include 'dodawanie_lini.html';
+						}
+
 						if ($_GET['usuwanie_plikow']==1) {
 						include 'usuwanie_plikow.php';
 						}
